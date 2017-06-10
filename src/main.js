@@ -4,10 +4,14 @@ import Vue from 'vue'
 import FastClick from 'fastclick'
 import App from './App'
 import router from './router/index'
+import { AjaxPlugin } from 'vux'
+import _ from 'lodash'
 
+Vue.use(AjaxPlugin)
 FastClick.attach(document.body)
 
 Vue.config.productionTip = false
+Vue.prototype._ = _
 
 /* eslint-disable no-new */
 new Vue({

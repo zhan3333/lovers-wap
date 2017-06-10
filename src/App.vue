@@ -1,12 +1,17 @@
 <template>
   <div id="app">
+    <x-header>标题</x-header>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
+import { XHeader } from 'vux'
 export default {
-  name: 'app'
+  name: 'app',
+  components: {
+    XHeader
+  }
 }
 </script>
 
