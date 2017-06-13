@@ -35,16 +35,37 @@
 
         ],
         /* 用户输入消息内容 */
-        message: ''
+        message: '',
+        toUserId: 0,
+        type: 1
       }
+    },
+    created () {
+      this.initUserId()
     },
     methods: {
       /* 发送消息 */
-      sendMessage: function () {
-        console.log(this.message)
-        console.log(this.messageList)
-        console.log(this._)
-        this.messageList.push(this.message)
+      sendMessage () {
+        this.httpRequest.post('/chat/sendMessage', {
+          type: this.type,
+          to: this.toUserId,
+          content: this.message
+        }).then(function (response) {
+          console.log(this)
+          if (response.data.error_code === '0') {
+            this.messageList.push(this.message)
+            this.message = ''
+            console.log('发送成功', response)
+          }
+        }).catch(function (err) {
+          console.error('发送失败', err)
+        })
+      },
+      initUserId () {
+        if (this.$route.params.userId === undefined) {
+//          this.$router.push('home')
+        }
+        this.toUserId = this.$route.params.userId
       }
     }
   }

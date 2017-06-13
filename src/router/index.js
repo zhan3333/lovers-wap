@@ -8,10 +8,12 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
+      name: 'home',
       path: '/',
       component: Home
     },
     {
+      name: 'chat',
       path: '/chat',
       component: Chat
     }

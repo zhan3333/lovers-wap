@@ -30,10 +30,21 @@
         selectFriendId: ''
       }
     },
+    created () {
+      this.getFriendList().then(function (response) {
+        this.friendList = response.data.result
+      }).catch(function (err) {
+        console.error(err)
+      })
+    },
     methods: {
       /**/
       clickFriend: function (userId) {
         console.log('userId:', userId)
+        this.$router.push({name: 'chat', params: {userId: userId}})
+      },
+      getFriendList: function () {
+        return this.httpRequest.post('/user/getFriendList')
       }
     }
   }
