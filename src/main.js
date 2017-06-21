@@ -22,6 +22,10 @@ FastClick.attach(document.body)
 Vue.config.productionTip = false
 Vue.prototype._ = _
 Vue.prototype.httpRequest = httpRequest
+Vue.prototype.loginInfo = {
+  uid: '',
+  token: ''
+}
 
 /* eslint-disable no-new */
 new Vue({
