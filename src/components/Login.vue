@@ -10,6 +10,7 @@
 
 <script>
   import { Group, Cell, XInput, XButton } from 'vux'
+  import { mapActions } from 'vuex'
 
   export default {
     components: {
@@ -20,14 +21,18 @@
     },
     data () {
       return {
-        username: '',
-        password: ''
+        username: '390961827@qq.com',
+        password: '123456'
       }
     },
     methods: {
+      ...mapActions([
+        'updateLoginInfo'
+      ]),
       login: function () {
         // 登陆逻辑
         console.log(this.username, this.password)
+        this.updateLoginInfo({username: this.username, password: this.password})
       }
     }
   }
