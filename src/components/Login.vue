@@ -31,7 +31,6 @@
       ]),
       login: function () {
         // 登陆逻辑
-        console.log(this.username, this.password)
         this.updateLoginInfo({username: this.username, password: this.password})
       }
     }

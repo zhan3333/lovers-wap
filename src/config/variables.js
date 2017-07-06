@@ -1,5 +1,8 @@
 const env = process.env.NODE_ENV
-const config = {}
+const debug = process.env.NODE_ENV !== 'production'
+const config = {
+  debug
+}
 switch (env) {
   case 'production':
     config.apiUrl = 'http://test.com:1025/api/'

@@ -6,9 +6,10 @@ import user from './modules/user'
 
 Vue.use(Vuex)
 
-const debug = process.env.NODE_ENV !== 'production'
-
+const debug = process.env.NODE_ENV === 'production'
+const state = {}
 export default new Vuex.Store({
+  state,
   actions,
   getters,
   modules: {

@@ -8,20 +8,22 @@ const state = {
   }
 }
 
-const getter = {
-  loginInfo: state => state.loginInfo
+const getters = {
+  getLoginInfo: state => state.loginInfo
 }
 
 const actions = {
   updateLoginInfo ({commit, state}, loginData) {
-    console.log('actions', loginData)
-    user.login(loginData)
-      .then((response) => {
-        commit(types.UPDATE_LOGIN_INFO, response.result)
-      })
-      .catch((error) => {
-        console.error(error)
-      })
+    return new Promise((resolve, reject) => {
+      user.login(loginData)
+        .then((result) => {
+          commit(types.UPDATE_LOGIN_INFO, result)
+          resolve(loginData)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
   }
 }
 
@@ -34,7 +36,7 @@ const mutations = {
 
 export default {
   state,
-  getter,
+  getters,
   actions,
   mutations
 }

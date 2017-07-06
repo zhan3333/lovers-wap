@@ -15,12 +15,14 @@
   "dependencies": {
     "fastclick": "^1.0.6",
     "jquery": "^3.2.1",
+    "js-cookie": "^2.1.4",
     "lodash": "^4.17.4",
     "vue": "^2.2.2",
     "vue-router": "^2.7.0",
     "vuex": "^2.1.1",
     "vuex-i18n": "^1.4.1",
-    "vux": "^2.5.0"
+    "vux": "^2.5.0",
+    "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",
