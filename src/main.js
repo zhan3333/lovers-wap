@@ -7,22 +7,16 @@ import router from './router/index'
 import _ from 'lodash'
 import store from './store'
 import * as Cookies from 'js-cookie'
-
-// var httpRequest = Vue.http.create({
-//   baseURL: 'http://test.com:1025/api/',
-//   headers: {
-//     'X-Requested-With': 'XMLHttpRequest',
-//     Authorization: 'Bearer '
-//   },
-//   timeout: 1000,
-//   method: 'post'
-// })
+import api from './api'
+import util from './js/util'
 
 FastClick.attach(document.body)
 
 Vue.config.productionTip = false
 Vue.prototype._ = _
 Vue.prototype.Cookies = Cookies
+Vue.prototype.$api = api
+Vue.prototype.$util = util
 
 /* eslint-disable no-new */
 new Vue({

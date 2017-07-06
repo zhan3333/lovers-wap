@@ -5,6 +5,9 @@ export default {
       email: loginData.username,
       password: loginData.password
     })
+  },
+  getFriendList () {
+    return fetch.post('user/getFriendList')
   }
 }
 

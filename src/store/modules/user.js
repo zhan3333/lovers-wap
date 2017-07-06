@@ -9,7 +9,8 @@ const state = {
 }
 
 const getters = {
-  getLoginInfo: state => state.loginInfo
+  getLoginInfo: state => state.loginInfo,
+  isLogin: state => !!state.loginInfo.uid
 }
 
 const actions = {

@@ -18,22 +18,18 @@
     data () {
       return {
         friendList: [
-          {
-            id: 1,
-            name: 'zhan'
-          },
-          {
-            id: 2,
-            name: 'zhan01'
-          }
         ],
         selectFriendId: ''
       }
     },
     created () {
-      this.getFriendList().then(function (response) {
-        this.friendList = response.data.result
-      }).catch(function (err) {
+      if (!this.$util.isLogin()) {
+        this.$router.push({name: 'login'})
+      }
+      this.getFriendList().then((result) => {
+        console.log(result)
+        this.friendList = result
+      }).catch((err) => {
         console.error(err)
       })
     },
@@ -44,7 +40,7 @@
         this.$router.push({name: 'chat', params: {userId: userId}})
       },
       getFriendList: function () {
-        return this.httpRequest.post('/user/getFriendList')
+        return this.$api.user.getFriendList()
       }
     }
   }

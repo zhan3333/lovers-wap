@@ -32,6 +32,12 @@
       login: function () {
         // 登陆逻辑
         this.updateLoginInfo({username: this.username, password: this.password})
+          .then((result) => {
+            this.$router.push({name: 'home'})
+          })
+          .catch((error) => {
+            console.log(error.message)
+          })
       }
     }
   }
