@@ -45,25 +45,17 @@
     },
     methods: {
       /* 发送消息 */
-      sendMessage () {
-        this.httpRequest.post('/chat/sendMessage', {
+      sendMessage: function () {
+        this.$api.chat.sendMessage({
           type: this.type,
           to: this.toUserId,
           content: this.message
-        }).then(function (response) {
-          console.log(this)
-          if (response.data.error_code === '0') {
-            this.messageList.push(this.message)
-            this.message = ''
-            console.log('发送成功', response)
-          }
-        }).catch(function (err) {
-          console.error('发送失败', err)
         })
       },
       initUserId () {
+        console.log(this.$route.params.userId)
         if (this.$route.params.userId === undefined) {
-//          this.$router.push('home')
+          this.$router.go(-1)
         }
         this.toUserId = this.$route.params.userId
       }

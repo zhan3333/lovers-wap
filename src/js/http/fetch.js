@@ -3,9 +3,16 @@ import variables from '../../config/variables'
 import store from '../../store/index'
 import user from '../../store/modules/user'
 import httpRequestLog from './httpRequestLog'
+import router from '../../router/index'
 
 const serverBaseUrl = variables.config.apiUrl
-
+const checkStatusCode = (statusCode) => {
+  if (statusCode + '' === '401') {
+    // 未登录
+    httpRequestLog.log('no login')
+    router.push({name: 'login'})
+  }
+}
 let post = (api, data) => {
   return new Promise((resolve, reject) => {
     let requestUrl = serverBaseUrl + api
@@ -19,6 +26,7 @@ let post = (api, data) => {
       body: JSON.stringify(data)
     })
       .then((response) => {
+        checkStatusCode(response.status)
         return response.json()
       })
       .then((json) => {

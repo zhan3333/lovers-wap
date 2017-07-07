@@ -23,9 +23,7 @@
       }
     },
     created () {
-      if (!this.$util.isLogin()) {
-        this.$router.push({name: 'login'})
-      }
+      // 检测未登陆
       this.getFriendList().then((result) => {
         console.log(result)
         this.friendList = result
@@ -45,13 +43,3 @@
     }
   }
 </script>
-
-<style>
-  .vux-demo {
-    text-align: center;
-  }
-  .logo {
-    width: 100px;
-    height: 100px
-  }
-</style>

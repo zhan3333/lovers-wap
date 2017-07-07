@@ -8,6 +8,9 @@ export default {
   },
   getFriendList () {
     return fetch.post('user/getFriendList')
+  },
+  isLogin () {
+    return fetch.post('auth/isLogin')
   }
 }
 

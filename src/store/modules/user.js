@@ -1,16 +1,17 @@
 import * as types from './../mutation-types'
 import user from '../../api/user'
+import * as Cookies from 'js-cookie'
 
 const state = {
   loginInfo: {
-    uid: '',
-    token: ''
+    uid: Cookies.get('uid') || '',
+    token: Cookies.get('token') || ''
   }
 }
 
 const getters = {
   getLoginInfo: state => state.loginInfo,
-  isLogin: state => !!state.loginInfo.uid
+  hasToken: state => !!state.loginInfo.uid
 }
 
 const actions = {
@@ -18,6 +19,9 @@ const actions = {
     return new Promise((resolve, reject) => {
       user.login(loginData)
         .then((result) => {
+          // 设置Cookies
+          Cookies.set('uid', result.uid)
+          Cookies.set('token', result.token)
           commit(types.UPDATE_LOGIN_INFO, result)
           resolve(loginData)
         })
