@@ -23,7 +23,6 @@
       }
     },
     created () {
-      // 检测未登陆
       this.getFriendList().then((result) => {
         console.log(result)
         this.friendList = result

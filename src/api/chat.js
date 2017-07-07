@@ -3,16 +3,27 @@ import fetch from '../js/http/fetch'
 export default {
   /* 发送消息 */
   sendMessage (data) {
-    console.log(111111)
     let type = data.type || 0
     let to = data.to || 0
-    let message = data.message || ''
-    console.log(type, to, message)
-    if (!message || !to || !type) return false
+    let content = data.content || ''
+    if (!content || !to || !type) return false
     return fetch.post('chat/sendMessage', {
       type,
       to,
-      message
+      content
+    })
+  },
+  /* 获取历史消息 */
+  getHistoryMessageList (data) {
+    let page = data.page
+    let length = data.length
+    let userId = data.userId
+    let curMessageId = data.curMessageId
+    return fetch.post('chat/getHistoryMessageList', {
+      page,
+      length,
+      userId,
+      curMessageId
     })
   }
 }
