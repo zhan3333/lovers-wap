@@ -9,6 +9,8 @@ import store from './store'
 import * as Cookies from 'js-cookie'
 import api from './api'
 import util from './js/util'
+import variables from './config/variables'
+import $ from 'jquery'
 
 FastClick.attach(document.body)
 
@@ -17,6 +19,8 @@ Vue.prototype._ = _
 Vue.prototype.Cookies = Cookies
 Vue.prototype.$api = api
 Vue.prototype.$util = util
+Vue.prototype.$variables = variables
+Vue.prototype.$ = $
 
 /* eslint-disable no-new */
 new Vue({

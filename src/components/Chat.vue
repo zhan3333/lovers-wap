@@ -1,10 +1,20 @@
 <template>
   <div>
+    <div id="socketJs"></div>
     <scroller lock-x scrollbar-y height="-115">
       <div>
-        <group v-for="message in messagesList">
-          <cell>{{message.content}}</cell>
-        </group>
+        <div v-for="message in messagesList">
+          <div v-if="isMeMessage(message)">
+            <card :header="{title: message.name}">
+              <div slot="content" class="isMeMessage">{{message.content}}</div>
+            </card>
+          </div>
+          <div v-else>
+            <card :header="{title: message.name}">
+              <div slot="content" class="otherMessage">{{message.content}}</div>
+            </card>
+          </div>
+        </div>
       </div>
     </scroller>
     <group >
@@ -14,12 +24,12 @@
     </group>
   </div>
 </template>
-
 <script>
-  import { Group, Cell, Scroller, Flexbox, FlexboxItem, XInput, XButton } from 'vux'
+  import { Group, Cell, Scroller, Flexbox, FlexboxItem, XInput, XButton, Card } from 'vux'
 
   export default {
     components: {
+      Card,
       Group,
       Cell,
       Scroller,
@@ -32,7 +42,6 @@
       return {
         /* 消息列表 */
         messagesList: [
-
         ],
         /* 用户输入消息内容 */
         content: '',
@@ -41,6 +50,7 @@
       }
     },
     created () {
+      this.requireChatSocketJs()
       this.initUserId()
       this.initHistoryMessage()
     },
@@ -57,18 +67,32 @@
       initUserId () {
         /* 检查userId是否存在 */
         if (this.$route.params.userId === undefined) {
-          this.$router.go(-1)
+          this.$router.push('home')
         }
         this.toUserId = this.$route.params.userId
       },
       /* 初始化历史消息 */
       initHistoryMessage () {
+        if (!this.toUserId) {
+          this.$router.push('home')
+          return
+        }
         this.$api.chat.getHistoryMessageList({
           length: 20,
           userId: this.toUserId
         }).then((result) => {
           this.messagesList = result.messages
         })
+      },
+      /* 返回是否为自己的消息 */
+      isMeMessage (message) {
+        return message.user_id + '' === this.$store.state.user.loginInfo.uid + ''
+      },
+      /* 动态导入js */
+      requireChatSocketJs () {
+        let tag = '<script src="' + this.chatSocketUrl + '"><' + '/' + 'script>'
+        console.log(tag, this.$('#socketJs'))
+        this.$('#socketJs').html(tag)
       }
     },
     computed: {
@@ -78,10 +102,23 @@
           let lastMessage = this._.last(this.messagesList)
           return lastMessage.id
         }
+      },
+      /* 加载socket.io.js的地址 */
+      chatSocketUrl: function () {
+        return this.$variables.config.chatSocketUrl
       }
     }
   }
 </script>
 
 <style>
+  /* 我的消息 */
+  .isMeMessage {
+    float: right;
+    padding: 10px;
+  }
+  .otherMessage {
+    float: left;
+    padding: 10px;
+  }
 </style>
