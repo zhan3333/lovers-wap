@@ -1,6 +1,5 @@
 <template>
   <div>
-    <div id="socketJs"></div>
     <scroller lock-x scrollbar-y height="-115">
       <div>
         <div v-for="message in messagesList">
@@ -50,9 +49,9 @@
       }
     },
     created () {
-      this.requireChatSocketJs()
       this.initUserId()
       this.initHistoryMessage()
+      this.initSocketListen()
     },
     methods: {
       /* 发送消息 */
@@ -86,13 +85,20 @@
       },
       /* 返回是否为自己的消息 */
       isMeMessage (message) {
-        return message.user_id + '' === this.$store.state.user.loginInfo.uid + ''
+        return message.user_id + '' === this.loginUserId
       },
       /* 动态导入js */
       requireChatSocketJs () {
-        let tag = '<script src="' + this.chatSocketUrl + '"><' + '/' + 'script>'
-        console.log(tag, this.$('#socketJs'))
-        this.$('#socketJs').html(tag)
+//        this.$.getScript(this.chatSocketJs)
+      },
+      /* 监听所在频道 */
+      initSocketListen () {
+        this.Echo.private('chat.' + this.loginUserId)
+          .listen('SendMessage', (e) => {
+            let message = e.message
+            console.info('from:', message.user_id)
+            console.log('content:', message.content)
+          })
       }
     },
     computed: {
@@ -104,8 +110,12 @@
         }
       },
       /* 加载socket.io.js的地址 */
-      chatSocketUrl: function () {
-        return this.$variables.config.chatSocketUrl
+      chatSocketJs: function () {
+        return this.$variables.config.chatSocketJs
+      },
+      /* 登陆用户id */
+      loginUserId: function () {
+        return this.$store.state.user.loginInfo.uid + ''
       }
     }
   }

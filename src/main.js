@@ -4,23 +4,26 @@ import Vue from 'vue'
 import FastClick from 'fastclick'
 import App from './App'
 import router from './router/index'
-import _ from 'lodash'
 import store from './store'
 import * as Cookies from 'js-cookie'
 import api from './api'
 import util from './js/util'
 import variables from './config/variables'
 import $ from 'jquery'
+import Echo from 'laravel-echo'
 
 FastClick.attach(document.body)
 
 Vue.config.productionTip = false
-Vue.prototype._ = _
 Vue.prototype.Cookies = Cookies
 Vue.prototype.$api = api
 Vue.prototype.$util = util
 Vue.prototype.$variables = variables
 Vue.prototype.$ = $
+Vue.prototype.Echo = new Echo({
+  broadcaster: 'socket.io',
+  host: variables.config.chatSocketUrl
+})
 
 /* eslint-disable no-new */
 new Vue({

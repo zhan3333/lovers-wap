@@ -24,7 +24,6 @@
     },
     created () {
       this.getFriendList().then((result) => {
-        console.log(result)
         this.friendList = result
       }).catch((err) => {
         console.error(err)
@@ -33,7 +32,6 @@
     methods: {
       /**/
       clickFriend: function (userId) {
-        console.log('userId:', userId)
         this.$router.push({name: 'chat', params: {userId: userId}})
       },
       getFriendList: function () {
