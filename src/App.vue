@@ -1,7 +1,7 @@
 <template>
-  <div id="app">
-    <x-header>标题</x-header>
-    <router-view></router-view>
+  <div id="app" style="height:100%;">
+    <x-header id="header" slot="header" style="width:100%;position:absolute;left:0;top:0;z-index:100;">标题</x-header>
+    <router-view style=""></router-view>
   </div>
 </template>
 
@@ -20,5 +20,10 @@ export default {
 
 body {
   background-color: #fbf9fe;
+}
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
 }
 </style>

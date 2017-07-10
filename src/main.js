@@ -10,7 +10,6 @@ import api from './api'
 import util from './js/util'
 import variables from './config/variables'
 import $ from 'jquery'
-import Echo from 'laravel-echo'
 
 FastClick.attach(document.body)
 
@@ -20,10 +19,6 @@ Vue.prototype.$api = api
 Vue.prototype.$util = util
 Vue.prototype.$variables = variables
 Vue.prototype.$ = $
-Vue.prototype.Echo = new Echo({
-  broadcaster: 'socket.io',
-  host: variables.config.chatSocketUrl
-})
 
 /* eslint-disable no-new */
 new Vue({

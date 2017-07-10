@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <scroller lock-x scrollbar-y height="-115">
-      <div>
+  <div class="chatList">
+    <div style="height: 100%">
+      <view-box>
         <div v-for="message in messagesList">
           <div v-if="isMeMessage(message)">
             <card :header="{title: message.name}">
@@ -14,9 +14,10 @@
             </card>
           </div>
         </div>
-      </div>
-    </scroller>
-    <group >
+      </view-box>
+    </div>
+
+    <group style="width:100%;position:absolute;left:0;bottom:0;z-index:100;">
       <x-input title="" class="" v-model="content">
         <x-button slot="right" type="primary" mini  @click.native="sendMessage">发送</x-button>
       </x-input>
@@ -25,9 +26,11 @@
 </template>
 <script>
   import { Group, Cell, Scroller, Flexbox, FlexboxItem, XInput, XButton, Card } from 'vux'
+  import ViewBox from '../../node_modules/vux/src/components/view-box/index'
 
   export default {
     components: {
+      ViewBox,
       Card,
       Group,
       Cell,
@@ -49,6 +52,18 @@
       }
     },
     created () {
+      let $ = this.$
+      let headerHeight = $('#header').outerHeight(true)
+      console.log(headerHeight)
+      $('.chatList').css({
+        'margin-top': '100px',
+        'color': 'white',
+        'background-color': '#98bf21',
+        'font-family': 'Arial',
+        'font-size': '20px',
+        'padding': '5px'
+      })
+      console.log($('#chatList').css('color'))
       this.initUserId()
       this.initHistoryMessage()
       this.initSocketListen()
@@ -87,17 +102,18 @@
       isMeMessage (message) {
         return message.user_id + '' === this.loginUserId
       },
-      /* 动态导入js */
-      requireChatSocketJs () {
-//        this.$.getScript(this.chatSocketJs)
-      },
       /* 监听所在频道 */
       initSocketListen () {
-        this.Echo.private('chat.' + this.loginUserId)
+        console.log('111111111111')
+        let echo = this.$util.initEcho()
+        echo.private('chat.' + this.loginUserId)
           .listen('SendMessage', (e) => {
             let message = e.message
-            console.info('from:', message.user_id)
-            console.log('content:', message.content)
+            console.log(message)
+            this.messagesList.push(message)
+          })
+          .notification((data) => {
+            console.log(data)
           })
       }
     },
@@ -108,10 +124,6 @@
           let lastMessage = this._.last(this.messagesList)
           return lastMessage.id
         }
-      },
-      /* 加载socket.io.js的地址 */
-      chatSocketJs: function () {
-        return this.$variables.config.chatSocketJs
       },
       /* 登陆用户id */
       loginUserId: function () {
