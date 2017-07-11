@@ -1,15 +1,20 @@
 <template>
-  <div>
-    <group>
-      <x-input title="username" v-model="username"></x-input>
-      <x-input title="password" v-model="password" type="password"></x-input>
-      <x-button @click.native="login">login</x-button>
+  <div class="loginBody">
+    <group gutter="8em" style="background-color: transparent">
+      <x-input title="" v-model="username" type="text" required placeholder="邮箱/用户名"></x-input>
+      <x-input title="" v-model="password" type="password" required placeholder="密码"></x-input>
+      <x-button @click.native="login" type="primary">login</x-button>
+      <flexbox gutter="0">
+        <flexbox-item :span="1/3" class="flexItem">忘记密码？</flexbox-item>
+        <flexbox-item :span="1/3" class="flexItem"></flexbox-item>
+        <flexbox-item :span="1/3" class="flexItem">新用户注册</flexbox-item>
+      </flexbox>
     </group>
   </div>
 </template>
 
 <script>
-  import { Group, Cell, XInput, XButton } from 'vux'
+  import { Group, Cell, XInput, XButton, Flexbox, FlexboxItem } from 'vux'
   import { mapActions } from 'vuex'
 
   export default {
@@ -17,7 +22,9 @@
       Group,
       Cell,
       XInput,
-      XButton
+      XButton,
+      Flexbox,
+      FlexboxItem
     },
     data () {
       return {
@@ -42,3 +49,13 @@
     }
   }
 </script>
+<style lang="less">
+  .loginBody {
+    margin: auto 20px;
+    background-color: aqua;
+  }
+  .flexItem {
+    text-align: center;
+    color: rgb(9, 163, 220);
+  }
+</style>

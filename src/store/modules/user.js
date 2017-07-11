@@ -19,9 +19,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       user.login(loginData)
         .then((result) => {
-          // 设置Cookies
-          Cookies.set('uid', result.uid)
-          Cookies.set('token', result.token)
           commit(types.UPDATE_LOGIN_INFO, result)
           resolve(loginData)
         })
@@ -29,6 +26,10 @@ const actions = {
           reject(error)
         })
     })
+  },
+  /* 退出登陆 */
+  loginOut ({commit}) {
+    commit(types.LOGIN_OUT)
   }
 }
 
@@ -36,6 +37,15 @@ const mutations = {
   [types.UPDATE_LOGIN_INFO] (state, {uid, token}) {
     state.loginInfo.uid = uid
     state.loginInfo.token = token
+    // 设置Cookies
+    Cookies.set('uid', uid)
+    Cookies.set('token', token)
+  },
+  [types.LOGIN_OUT] (state) {
+    state.loginInfo = {}
+    // 删除Cookies
+    Cookies.remove('uid')
+    Cookies.remove('token')
   }
 }
 

@@ -1,8 +1,8 @@
 <template>
   <div>
     <div style="height: 100%">
-      <view-box>
-        <div v-for="message in messagesList">
+      <view-box  ref="chatViewBox">
+        <div v-for="message in messagesList" solt="default" >
           <div v-if="isMeMessage(message)">
             <card :header="{title: 'me'}">
               <div slot="content" class="isMeMessage">{{message.content}}</div>
@@ -25,17 +25,16 @@
   </div>
 </template>
 <script>
-  import { Group, Cell, Flexbox, FlexboxItem, XInput, XButton, Card } from 'vux'
+  import { Group, Cell, XInput, XButton, Card } from 'vux'
   import ViewBox from '../../node_modules/vux/src/components/view-box/index'
 
   export default {
+    name: 'chat',
     components: {
       ViewBox,
       Card,
       Group,
       Cell,
-      Flexbox,
-      FlexboxItem,
       XInput,
       XButton
     },
@@ -55,6 +54,10 @@
       this.initHistoryMessage()
       this.initSocketListen()
     },
+    mounted () {
+      let scrollHeight = this.$refs.chatViewBox.getScrollBody().scrollHeight
+      this.$refs.chatViewBox.scrollTo(scrollHeight)
+    },
     methods: {
       /* 发送消息 */
       sendMessage: function () {
@@ -62,6 +65,11 @@
           type: this.type,
           to: this.toUserId,
           content: this.content
+        }).then((result) => {
+          this.content = ''   // 清除输入框
+          let message = result.message
+          message.name = result.user.name
+          this.messagesList.push(result.message)
         })
       },
       /* 获取传递过来的userId */
@@ -82,7 +90,7 @@
           length: 20,
           userId: this.toUserId
         }).then((result) => {
-          this.messagesList = result.messages
+          this.messagesList = result.messages.reverse()
         })
       },
       /* 返回是否为自己的消息 */
@@ -94,8 +102,14 @@
         let echo = this.$util.initEcho()
         echo.private('chat.' + this.loginUserId)
           .listen('SendMessage', (e) => {
+            console.log(e)
             let message = e.message
-            console.log(message)
+            let user = e.user
+            message.name = user.name
+            this.$vux.toast.show({
+              text: message.name + ': ' + message.content,
+              type: 'text'
+            })
             this.messagesList.push(message)
           })
           .notification((data) => {
@@ -114,6 +128,13 @@
       /* 登陆用户id */
       loginUserId: function () {
         return this.$store.state.user.loginInfo.uid + ''
+      },
+      scrollTop: function () {
+      }
+    },
+    watch: {
+      scrollTop: function (val, oldVal) {
+        console.log(val, oldVal)
       }
     }
   }

@@ -3,13 +3,16 @@
 import Vue from 'vue'
 import FastClick from 'fastclick'
 import App from './App'
-import router from './router/index'
+import router from './router'
 import store from './store'
 import * as Cookies from 'js-cookie'
 import api from './api'
 import util from './js/util'
 import variables from './config/variables'
 import $ from 'jquery'
+import { ToastPlugin } from 'vux'
+
+Vue.use(ToastPlugin)
 
 FastClick.attach(document.body)
 
