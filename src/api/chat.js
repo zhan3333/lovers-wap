@@ -6,7 +6,6 @@ export default {
     let type = data.type || 0
     let to = data.to || 0
     let content = data.content || ''
-    if (!content || !to || !type) return false
     return fetch.post('chat/sendMessage', {
       type,
       to,

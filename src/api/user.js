@@ -11,6 +11,13 @@ export default {
   },
   isLogin () {
     return fetch.post('auth/isLogin')
+  },
+  register (data) {
+    return fetch.post('auth/register', {
+      email: data.email,
+      name: data.name,
+      password: data.password
+    })
   }
 }
 

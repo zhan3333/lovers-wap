@@ -10,9 +10,10 @@ import api from './api'
 import util from './js/util'
 import variables from './config/variables'
 import $ from 'jquery'
-import { ToastPlugin } from 'vux'
+import { ToastPlugin, LoadingPlugin } from 'vux'
 
 Vue.use(ToastPlugin)
+Vue.use(LoadingPlugin)
 
 FastClick.attach(document.body)
 
