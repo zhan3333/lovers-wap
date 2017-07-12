@@ -18,6 +18,12 @@ export default {
       name: data.name,
       password: data.password
     })
+  },
+  /* 根据id获取用户信息 */
+  getUserInfo (userId) {
+    return fetch.post('user/getUserInfo', {
+      user_id: userId
+    })
   }
 }
 

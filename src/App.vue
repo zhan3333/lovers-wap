@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" ref="app" style="height: 100%">
     <x-header
       id="header"
       ref="header"
@@ -24,7 +24,6 @@ export default {
   },
   data () {
     return {
-      headerHeight: 0,
       headerShowBack: true,
       headerShowMore: true,
       isShowMenu: false,
@@ -40,13 +39,15 @@ export default {
   },
   methods: {
     ...mapActions([
-      'changePageTitle', 'loginOut'
+      'changePageTitle', 'loginOut', 'updateAppHeight', 'updateHeaderHeight'
     ]),
     /* 初始化router-view的高度 */
     initRouterViewHeight: function () {
       let $ = this.$
       let headerHeight = $('#header').outerHeight(true)
-      this.headerHeight = headerHeight || 46
+      let appHeight = $(document).height()
+      this.updateAppHeight(appHeight)
+      this.updateHeaderHeight(headerHeight)
     },
     pathChangeDo: function (route) {
       if (route.name === 'login') {
@@ -77,7 +78,9 @@ export default {
   },
   computed: {
     ...mapState({
-      title: state => state.title
+      title: state => state.title,
+      headerHeight: state => state.headerHeight,
+      appHeight: state => state.appHeight
     }),
     path: function () {
       return this.$route.path

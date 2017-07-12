@@ -10,7 +10,9 @@ Vue.use(Vuex)
 
 const debug = process.env.NODE_ENV === 'production'
 const state = {
-  title: 'lovers'
+  title: 'lovers',
+  appHeight: 0,
+  headerHeight: 0
 }
 export default new Vuex.Store({
   state,

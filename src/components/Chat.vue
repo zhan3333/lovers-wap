@@ -1,8 +1,16 @@
 <template>
-  <div>
-    <div style="height: 100%">
-      <view-box  ref="chatViewBox">
-        <div v-for="message in messagesList" solt="default" >
+  <div id="chatBody">
+    <scroller
+      @on-scroll="onScroll"
+      lock-x
+      :height="scrollerHeight"
+      ref="scrollerEvent"
+      :bounce=true
+      @on-pulldown-loading="onPullDownLoading"
+      :use-pulldown="true"
+    >
+      <div>
+        <div v-for="message in messagesList">
           <div v-if="isMeMessage(message)">
             <card :header="{title: 'me'}">
               <div slot="content" class="isMeMessage">{{message.content}}</div>
@@ -14,10 +22,11 @@
             </card>
           </div>
         </div>
-      </view-box>
-    </div>
+      </div>
+    </scroller>
 
-    <group style="width:100%;position:absolute;left:0;bottom:0;z-index:100;">
+
+    <group style="width:100%;position:absolute;left:0;bottom:0;z-index:100;" id="inputMessage">
       <x-input title="" class="" v-model="content">
         <x-button slot="right" type="primary" mini  @click.native="sendMessage">发送</x-button>
       </x-input>
@@ -27,10 +36,12 @@
 <script>
   import { Group, Cell, XInput, XButton, Card } from 'vux'
   import ViewBox from '../../node_modules/vux/src/components/view-box/index'
-
+  import Scroller from '../../node_modules/vux/src/components/scroller/index'
+  import { mapState } from 'vuex'
   export default {
     name: 'chat',
     components: {
+      Scroller,
       ViewBox,
       Card,
       Group,
@@ -46,7 +57,13 @@
         /* 用户输入消息内容 */
         content: '',
         toUserId: 0,
-        type: 1
+        type: 1,
+        toUserInfo: {},
+        inputMessageHeight: 0,
+        messagePage: {
+          page: 1,
+          length: 20
+        }
       }
     },
     created () {
@@ -55,8 +72,10 @@
       this.initSocketListen()
     },
     mounted () {
-      let scrollHeight = this.$refs.chatViewBox.getScrollBody().scrollHeight
-      this.$refs.chatViewBox.scrollTo(scrollHeight)
+      this.initScrollerHeight()
+    },
+    activated () {
+      this.$refs.scroller.reset()
     },
     methods: {
       /* 发送消息 */
@@ -77,8 +96,15 @@
         /* 检查userId是否存在 */
         if (this.$route.params.userId === undefined) {
           this.$router.push('home')
+        } else {
+          this.toUserId = this.$route.params.userId
+          /* 查询好友资料 设置标题 */
+          this.$api.user.getUserInfo(this.toUserId)
+            .then((result) => {
+              this.toUserInfo = result.user
+              this.$store.state.title = this.toUserInfo.name
+            })
         }
-        this.toUserId = this.$route.params.userId
       },
       /* 初始化历史消息 */
       initHistoryMessage () {
@@ -87,10 +113,40 @@
           return
         }
         this.$api.chat.getHistoryMessageList({
-          length: 20,
+          page: this.messagePage.page,
+          length: this.messagePage.length,
           userId: this.toUserId
         }).then((result) => {
-          this.messagesList = result.messages.reverse()
+          console.log(this._.isEmpty(result.messages), this._.isEmpty([]))
+          console.log(result.messages.length)
+          if (!this._.isEmpty(result.messages)) {
+            this.messagePage.page = this.messagePage.page + 1
+            this.messagesList = result.messages.reverse()
+            this.$nextTick(function () {
+              this.$refs.scrollerEvent.reset()
+            })
+          }
+        })
+      },
+      onPullDownLoading () {
+        console.log(1111)
+        if (!this.toUserId) {
+          this.$router.push('home')
+          return
+        }
+        this.$api.chat.getHistoryMessageList({
+          page: this.messagePage.page,
+          length: this.messagePage.length,
+          userId: this.toUserId
+        }).then((result) => {
+          if (!this._.isEmpty(result.messages)) {
+            this.messagePage.page = this.messagePage.page + 1
+            let messagesList = result.messages.reverse()
+            this.messagesList = messagesList.concat(this.messagesList)
+            this.$nextTick(function () {
+              this.$refs.scrollerEvent.reset()
+            })
+          }
         })
       },
       /* 返回是否为自己的消息 */
@@ -115,21 +171,33 @@
           .notification((data) => {
             console.log(data)
           })
+      },
+      onScroll (data) {
+//        console.log(data)
+      },
+      initScrollerHeight () {
+        let $ = this.$
+        let inputMessageHeight = $('#inputMessage').outerHeight(true)
+        this.inputMessageHeight = inputMessageHeight || 46
       }
     },
     computed: {
+      ...mapState({
+        appHeight: state => state.appHeight,
+        headerHeight: state => state.headerHeight
+      }),
       /* 取最后一个消息的id */
       minMessageId: function () {
         if (this.messagesList) {
-          let lastMessage = this._.last(this.messagesList)
-          return lastMessage.id
+          return this.messagesList[0].id
         }
       },
       /* 登陆用户id */
       loginUserId: function () {
         return this.$store.state.user.loginInfo.uid + ''
       },
-      scrollTop: function () {
+      scrollerHeight: function () {
+        return this.appHeight - this.headerHeight - this.inputMessageHeight + 'px'
       }
     },
     watch: {
@@ -149,5 +217,8 @@
   .otherMessage {
     float: left;
     padding: 10px;
+  }
+  .boxItem {
+    position: relative;
   }
 </style>

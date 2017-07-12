@@ -11,6 +11,7 @@ import util from './js/util'
 import variables from './config/variables'
 import $ from 'jquery'
 import { ToastPlugin, LoadingPlugin } from 'vux'
+import * as _ from 'lodash'
 
 Vue.use(ToastPlugin)
 Vue.use(LoadingPlugin)
@@ -23,6 +24,7 @@ Vue.prototype.$api = api
 Vue.prototype.$util = util
 Vue.prototype.$variables = variables
 Vue.prototype.$ = $
+Vue.prototype._ = _
 
 /* eslint-disable no-new */
 new Vue({
