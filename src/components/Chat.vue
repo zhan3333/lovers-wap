@@ -8,6 +8,7 @@
       :bounce=true
       @on-pulldown-loading="onPullDownLoading"
       :use-pulldown="true"
+      :pulldown-config="pullDownConfig"
     >
       <div>
         <div v-for="message in messagesList">
@@ -59,10 +60,18 @@
         toUserId: 0,
         type: 1,
         toUserInfo: {},
-        inputMessageHeight: 0,
         messagePage: {
           page: 1,
           length: 20
+        },
+        pullDownConfig: {
+          content: 'content',
+          height: 60,
+          autoRefresh: false,
+          downContent: '更多',
+          upContent: '可以松开啦',
+          loadingContent: '加载中...',
+          clsPrefix: 'xs-plugin-pulldown-'
         }
       }
     },
@@ -72,10 +81,6 @@
       this.initSocketListen()
     },
     mounted () {
-      this.initScrollerHeight()
-    },
-    activated () {
-      this.$refs.scroller.reset()
     },
     methods: {
       /* 发送消息 */
@@ -89,6 +94,7 @@
           let message = result.message
           message.name = result.user.name
           this.messagesList.push(result.message)
+          this.resetScroller()
         })
       },
       /* 获取传递过来的userId */
@@ -117,19 +123,15 @@
           length: this.messagePage.length,
           userId: this.toUserId
         }).then((result) => {
-          console.log(this._.isEmpty(result.messages), this._.isEmpty([]))
-          console.log(result.messages.length)
           if (!this._.isEmpty(result.messages)) {
             this.messagePage.page = this.messagePage.page + 1
             this.messagesList = result.messages.reverse()
-            this.$nextTick(function () {
-              this.$refs.scrollerEvent.reset()
-            })
+            this.resetScroller()
           }
         })
       },
+      /* 聊天列表下拉事件 */
       onPullDownLoading () {
-        console.log(1111)
         if (!this.toUserId) {
           this.$router.push('home')
           return
@@ -143,10 +145,9 @@
             this.messagePage.page = this.messagePage.page + 1
             let messagesList = result.messages.reverse()
             this.messagesList = messagesList.concat(this.messagesList)
-            this.$nextTick(function () {
-              this.$refs.scrollerEvent.reset()
-            })
+            this.resetScroller()
           }
+          this.$refs.scrollerEvent.donePulldown()
         })
       },
       /* 返回是否为自己的消息 */
@@ -172,13 +173,15 @@
             console.log(data)
           })
       },
+      /* 聊天列表滚动事件 */
       onScroll (data) {
 //        console.log(data)
       },
-      initScrollerHeight () {
-        let $ = this.$
-        let inputMessageHeight = $('#inputMessage').outerHeight(true)
-        this.inputMessageHeight = inputMessageHeight || 46
+      /* 更改数据后刷新列表 */
+      resetScroller () {
+        this.$nextTick(function () {
+          this.$refs.scrollerEvent.reset()
+        })
       }
     },
     computed: {
@@ -186,24 +189,22 @@
         appHeight: state => state.appHeight,
         headerHeight: state => state.headerHeight
       }),
-      /* 取最后一个消息的id */
-      minMessageId: function () {
-        if (this.messagesList) {
-          return this.messagesList[0].id
-        }
-      },
       /* 登陆用户id */
       loginUserId: function () {
         return this.$store.state.user.loginInfo.uid + ''
       },
+      /* 聊天列表高度 */
       scrollerHeight: function () {
         return this.appHeight - this.headerHeight - this.inputMessageHeight + 'px'
+      },
+      /* 输入框高度 */
+      inputMessageHeight: function () {
+        let $ = this.$
+        let height = $('#inputMessage').outerHeight(true)
+        return height
       }
     },
     watch: {
-      scrollTop: function (val, oldVal) {
-        console.log(val, oldVal)
-      }
     }
   }
 </script>

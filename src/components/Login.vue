@@ -49,7 +49,7 @@
               type: 'success',
               text: '登陆成功'
             })
-            this.$router.push({name: 'home'})
+            this.$router.replace({name: 'home'})
           })
           .catch((error) => {
             console.log(error.message)

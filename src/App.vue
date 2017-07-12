@@ -33,7 +33,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this)
     this.pathChangeDo(this.$route)
     this.initRouterViewHeight()
   },
@@ -63,7 +62,6 @@ export default {
     },
     /* 选择菜单 */
     clickMenu: function (key) {
-      console.log(key)
       switch (key) {
         case 'exit': {
           this.loginOut()
