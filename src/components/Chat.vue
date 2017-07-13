@@ -139,7 +139,7 @@
           if (!this._.isEmpty(result.messages)) {
             this.messagePage.page = this.messagePage.page + 1
             this.messagesList = result.messages.reverse()
-            this.resetScroller()
+            this.resetScroller(true)
           }
         })
       },
@@ -191,11 +191,14 @@
 //        console.log(data)
       },
       /* 更改数据后刷新列表 */
-      resetScroller (data = {}) {
+      resetScroller (toBottom = false) {
         this.$nextTick(function () {
-          let scrollHeight = this.$(this.$refs.scrollerEvent.$el).children()[0].scrollHeight
-          /* scroller下滑到底部需要的高度  */
-          let top = scrollHeight - (this.appHeight - this.headerHeight - this.inputMessageHeight)
+          let top = 0
+          if (toBottom) {
+            let scrollHeight = this.$(this.$refs.scrollerEvent.$el).children()[0].scrollHeight
+            /* scroller下滑到底部需要的高度  */
+            top = scrollHeight - (this.appHeight - this.headerHeight - this.inputMessageHeight)
+          }
           this.$refs.scrollerEvent.reset({top})
         })
       },
