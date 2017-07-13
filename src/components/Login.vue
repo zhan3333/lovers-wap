@@ -73,7 +73,6 @@
 <style lang="less">
   .loginBody {
     margin: auto 20px;
-    background-color: aqua;
   }
   .flexItem {
     text-align: center;

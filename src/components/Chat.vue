@@ -100,7 +100,7 @@
           let message = result.message
           message.name = result.user.name
           this.messagesList.push(result.message)
-          this.resetScroller()
+          this.resetScroller(true)
           this.$vux.loading.hide()
         }).catch(() => {
           this.$vux.loading.hide()
@@ -169,8 +169,10 @@
       },
       /* 监听所在频道 */
       initSocketListen () {
+        let channel = 'chat.' + this.loginUserId
+        console.log('listen to ' + channel)
         let echo = this.$util.initEcho()
-        echo.private('chat.' + this.loginUserId)
+        echo.private(channel)
           .listen('SendMessage', (e) => {
             console.log(e)
             let message = e.message
@@ -198,6 +200,7 @@
             let scrollHeight = this.$(this.$refs.scrollerEvent.$el).children()[0].scrollHeight
             /* scroller下滑到底部需要的高度  */
             top = scrollHeight - (this.appHeight - this.headerHeight - this.inputMessageHeight)
+            if (top < 0) top = 0
           }
           this.$refs.scrollerEvent.reset({top})
         })

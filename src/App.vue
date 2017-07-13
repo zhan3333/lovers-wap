@@ -1,5 +1,5 @@
 <template>
-  <div id="app" ref="app" style="height: 100%">
+  <div id="app" ref="app" style="{height: 100%}">
     <x-header
       id="header"
       ref="header"
@@ -7,8 +7,9 @@
       :right-options="{showMore: headerShowMore}"
       style="width:100%;position:absolute;left:0;top:0;z-index:100;"
       @on-click-more="showMenu"
-    >{{title}}</x-header>
-    <router-view v-bind:style="{marginTop: routerViewMarginTop}"></router-view>
+    >{{title}}
+    </x-header>
+    <router-view v-bind:style="{paddingTop: routerViewPaddingTop, height: routerViewHeight}"></router-view>
     <actionsheet v-model="isShowMenu" :menus="menus" @on-click-menu="clickMenu" show-cancel></actionsheet>
   </div>
 </template>
@@ -87,8 +88,11 @@ export default {
     route: function () {
       return this.$route
     },
-    routerViewMarginTop: function () {
+    routerViewPaddingTop: function () {
       return this.headerHeight + 'px'
+    },
+    routerViewHeight: function () {
+      return this.appHeight - this.headerHeight + 'px'
     }
   },
   watch: {
