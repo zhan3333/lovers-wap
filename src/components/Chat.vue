@@ -88,6 +88,9 @@
     methods: {
       /* 发送消息 */
       sendMessage: function () {
+        this.$vux.loading.show({
+          text: '发送中...'
+        })
         this.$api.chat.sendMessage({
           type: this.type,
           to: this.toUserId,
@@ -98,6 +101,13 @@
           message.name = result.user.name
           this.messagesList.push(result.message)
           this.resetScroller()
+          this.$vux.loading.hide()
+        }).catch(() => {
+          this.$vux.loading.hide()
+          this.$vux.toast.show({
+            text: '发送失败',
+            type: 'warn'
+          })
         })
       },
       /* 获取传递过来的userId */
@@ -181,9 +191,12 @@
 //        console.log(data)
       },
       /* 更改数据后刷新列表 */
-      resetScroller () {
+      resetScroller (data = {}) {
         this.$nextTick(function () {
-          this.$refs.scrollerEvent.reset()
+          let scrollHeight = this.$(this.$refs.scrollerEvent.$el).children()[0].scrollHeight
+          /* scroller下滑到底部需要的高度  */
+          let top = scrollHeight - (this.appHeight - this.headerHeight - this.inputMessageHeight)
+          this.$refs.scrollerEvent.reset({top})
         })
       },
       /* 输入框高度 */

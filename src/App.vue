@@ -49,7 +49,8 @@ export default {
       this.updateHeaderHeight(headerHeight)
     },
     pathChangeDo: function (route) {
-      if (route.name === 'login' || route.path === '/') {
+      console.log(route)
+      if (route.name === 'login' || route.name === 'index') {
         this.showBack = false
       } else {
         this.showBack = true

@@ -5,7 +5,6 @@ import * as getters from './getters'
 import mutations from './mutations'
 import user from './modules/user'
 
-console.log(actions)
 Vue.use(Vuex)
 
 const debug = process.env.NODE_ENV === 'production'
