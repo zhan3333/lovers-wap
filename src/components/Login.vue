@@ -32,8 +32,8 @@
     },
     data () {
       return {
-        username: '390961827@qq.com',
-        password: '123456'
+        username: '',
+        password: ''
       }
     },
     methods: {

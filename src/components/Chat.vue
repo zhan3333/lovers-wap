@@ -38,7 +38,7 @@
   import { Group, Cell, XInput, XButton, Card } from 'vux'
   import ViewBox from '../../node_modules/vux/src/components/view-box/index'
   import Scroller from '../../node_modules/vux/src/components/scroller/index'
-  import { mapState } from 'vuex'
+  import { mapState, mapActions } from 'vuex'
   export default {
     name: 'chat',
     components: {
@@ -78,7 +78,7 @@
       }
     },
     created () {
-      this.initUserId()
+      this.initToUserId()
       this.initHistoryMessage()
       this.initSocketListen()
     },
@@ -86,6 +86,9 @@
       this.inputMessageHeight = this.getInputMessageHeight()
     },
     methods: {
+      ...mapActions([
+        'updateChatToUserId'
+      ]),
       /* 发送消息 */
       sendMessage: function () {
         this.$vux.loading.show({
@@ -111,17 +114,24 @@
         })
       },
       /* 获取传递过来的userId */
-      initUserId () {
-        /* 检查userId是否存在 */
+      initToUserId () {
         if (this.$route.params.userId === undefined) {
-          this.$router.push('home')
+          let stateToUserId = this.$store.state.chat.chatToUserId
+          if (!stateToUserId) {
+            this.$router.replace('home')
+          } else {
+            this.toUserId = stateToUserId
+          }
         } else {
           this.toUserId = this.$route.params.userId
+          this.updateChatToUserId(this.toUserId)
           /* 查询好友资料 设置标题 */
           this.$api.user.getUserInfo(this.toUserId)
             .then((result) => {
-              this.toUserInfo = result.user
-              this.$store.state.title = this.toUserInfo.name
+              if (result.use) {
+                this.toUserInfo = {...result.user}
+                this.$store.state.title = this.toUserInfo.name
+              }
             })
         }
       },
@@ -183,6 +193,7 @@
               type: 'text'
             })
             this.messagesList.push(message)
+            this.resetScroller(true)
           })
           .notification((data) => {
             console.log(data)

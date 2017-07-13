@@ -38,8 +38,8 @@ const mutations = {
     state.loginInfo.uid = uid
     state.loginInfo.token = token
     // 设置Cookies
-    Cookies.set('uid', uid)
-    Cookies.set('token', token)
+    Cookies.set('uid', uid, {expires: 30})
+    Cookies.set('token', token, {expires: 30})
   },
   [types.LOGIN_OUT] (state) {
     state.loginInfo = {}
