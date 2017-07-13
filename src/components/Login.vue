@@ -5,7 +5,9 @@
       <x-input title="" v-model="password" type="password" required placeholder="密码"></x-input>
       <x-button @click.native="login" type="primary">login</x-button>
       <flexbox>
-        <flexbox-item :span="1/3" class="flexItem"><router-link to="">忘记密码？</router-link></flexbox-item>
+        <flexbox-item :span="1/3" class="flexItem">
+          <router-link to="" @click.native="toFindPassword">忘记密码？</router-link>
+        </flexbox-item>
         <flexbox-item :span="1/3" class="flexItem"></flexbox-item>
         <flexbox-item :span="1/3" class="flexItem">
           <router-link :to="{name: 'register'}">现在注册</router-link>
@@ -58,6 +60,12 @@
               text: error.message
             })
           })
+      },
+      toFindPassword () {
+        this.$vux.toast.show({
+          text: '忘了我也没办法呀...',
+          type: 'text'
+        })
       }
     }
   }

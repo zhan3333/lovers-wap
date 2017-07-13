@@ -64,6 +64,7 @@
           page: 1,
           length: 20
         },
+        /* 下拉配置 */
         pullDownConfig: {
           content: 'content',
           height: 60,
@@ -72,7 +73,8 @@
           upContent: '可以松开啦',
           loadingContent: '加载中...',
           clsPrefix: 'xs-plugin-pulldown-'
-        }
+        },
+        inputMessageHeight: 0
       }
     },
     created () {
@@ -81,6 +83,7 @@
       this.initSocketListen()
     },
     mounted () {
+      this.inputMessageHeight = this.getInputMessageHeight()
     },
     methods: {
       /* 发送消息 */
@@ -182,6 +185,12 @@
         this.$nextTick(function () {
           this.$refs.scrollerEvent.reset()
         })
+      },
+      /* 输入框高度 */
+      getInputMessageHeight () {
+        let $ = this.$
+        let height = $('#inputMessage').outerHeight(true)
+        return height
       }
     },
     computed: {
@@ -196,12 +205,6 @@
       /* 聊天列表高度 */
       scrollerHeight: function () {
         return this.appHeight - this.headerHeight - this.inputMessageHeight + 'px'
-      },
-      /* 输入框高度 */
-      inputMessageHeight: function () {
-        let $ = this.$
-        let height = $('#inputMessage').outerHeight(true)
-        return height
       }
     },
     watch: {

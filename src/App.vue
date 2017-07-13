@@ -49,7 +49,7 @@ export default {
       this.updateHeaderHeight(headerHeight)
     },
     pathChangeDo: function (route) {
-      if (route.name === 'login') {
+      if (route.name === 'login' || route.path === '/') {
         this.showBack = false
       } else {
         this.showBack = true
