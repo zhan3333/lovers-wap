@@ -93,7 +93,7 @@
     },
     methods: {
       ...mapActions([
-        'updateChatToUserId'
+        'updateChatToUserId', 'changePageTitle'
       ]),
       /* 发送消息 */
       sendMessage: function () {
@@ -137,7 +137,7 @@
           .then((result) => {
             if (result.user) {
               this.toUserInfo = {...result.user}
-              this.$store.state.title = this.toUserInfo.name
+              this.changePageTitle(this.toUserInfo.name)
             }
           })
       },
