@@ -11,23 +11,30 @@
       :pulldown-config="pullDownConfig"
     >
       <div>
-        <div v-for="message in messagesList">
-          <div v-if="isMeMessage(message)">
-            <card :header="{title: 'me'}">
-              <div slot="content" class="isMeMessage">{{message.content}}</div>
-            </card>
-          </div>
-          <div v-else>
-            <card :header="{title: message.name}">
-              <div slot="content" class="otherMessage">{{message.content}}</div>
-            </card>
-          </div>
-        </div>
+        <flexbox orient="vertical" v-for="message in messagesList" :gutter="0">
+          <flexbox-item v-if="isMeMessage(message)">
+            <flexbox :gutter="0">
+              <flexbox-item :span="2"><div></div></flexbox-item>
+              <flexbox-item :span="8"><div class="isMeMessage">{{message.content}}</div></flexbox-item>
+              <flexbox-item :span="2">
+                <div style="text-align:center"><img src="/static/img/headimg/default.jpg"  style="height: 36px; width: 36px"></div>
+              </flexbox-item>
+            </flexbox>
+          </flexbox-item>
+          <flexbox-item v-else>
+            <flexbox :gutter="0">
+              <flexbox-item :span="2">
+                <div style="text-align:center"><img src="/static/img/headimg/default-2.jpg"  style="height: 36px; width: 36px"></div>
+              </flexbox-item>
+              <flexbox-item :span="8"><div class="otherMessage">{{message.content}}</div></flexbox-item>
+              <flexbox-item :span="2"><div></div></flexbox-item>
+            </flexbox>
+          </flexbox-item>
+        </flexbox>
       </div>
     </scroller>
 
-
-    <group style="width:100%;position:absolute;left:0;bottom:0;z-index:100;" id="inputMessage">
+    <group style="width:100%;position:absolute;left:0;bottom:0;z-index:100;" id="inputMessage" gutter="0px">
       <x-input title="" class="" v-model="content">
         <x-button slot="right" type="primary" mini  @click.native="sendMessage">发送</x-button>
       </x-input>
@@ -35,15 +42,14 @@
   </div>
 </template>
 <script>
-  import { Group, Cell, XInput, XButton, Card } from 'vux'
-  import ViewBox from '../../node_modules/vux/src/components/view-box/index'
-  import Scroller from '../../node_modules/vux/src/components/scroller/index'
+  import { Group, Cell, XInput, XButton, Card, Flexbox, FlexboxItem, Scroller } from 'vux'
   import { mapState, mapActions } from 'vuex'
   export default {
     name: 'chat',
     components: {
+      Flexbox,
+      FlexboxItem,
       Scroller,
-      ViewBox,
       Card,
       Group,
       Cell,
@@ -115,25 +121,25 @@
       },
       /* 获取传递过来的userId */
       initToUserId () {
+        let toUserId = ''
         if (this.$route.params.userId === undefined) {
-          let stateToUserId = this.$store.state.chat.chatToUserId
-          if (!stateToUserId) {
+          toUserId = this.$store.state.chat.chatToUserId
+          if (!toUserId) {
             this.$router.replace('home')
-          } else {
-            this.toUserId = stateToUserId
           }
         } else {
-          this.toUserId = this.$route.params.userId
-          this.updateChatToUserId(this.toUserId)
-          /* 查询好友资料 设置标题 */
-          this.$api.user.getUserInfo(this.toUserId)
-            .then((result) => {
-              if (result.use) {
-                this.toUserInfo = {...result.user}
-                this.$store.state.title = this.toUserInfo.name
-              }
-            })
+          toUserId = this.$route.params.userId
         }
+        this.toUserId = toUserId
+        this.updateChatToUserId(this.toUserId)
+        /* 查询好友资料 设置标题 */
+        this.$api.user.getUserInfo(this.toUserId)
+          .then((result) => {
+            if (result.user) {
+              this.toUserInfo = {...result.user}
+              this.$store.state.title = this.toUserInfo.name
+            }
+          })
       },
       /* 初始化历史消息 */
       initHistoryMessage () {
