@@ -36,6 +36,7 @@ export default {
   mounted () {
     this.pathChangeDo(this.$route)
     this.initRouterViewHeight()
+    this.loadSocketJs()
   },
   methods: {
     ...mapActions([
@@ -74,6 +75,11 @@ export default {
           this.$router.replace('login')
         }
       }
+    },
+    loadSocketJs () {
+      let js = this.$variables.config.chatSocketJs
+      let html = '<script src=" ' + js + '"' + '>' + '<' + '/script>'
+      this.$('#socket-js').html(html)
     }
   },
   computed: {
