@@ -93,7 +93,7 @@
     },
     methods: {
       ...mapActions([
-        'updateChatToUserId', 'changePageTitle'
+        'updateChatToUserId', 'changePageTitle', 'addMessagesList'
       ]),
       /* 发送消息 */
       sendMessage: function () {
@@ -105,10 +105,19 @@
           to: this.toUserId,
           content: this.content
         }).then((result) => {
+          let sendContent = this.content
           this.content = ''   // 清除输入框
           let message = result.message
           message.name = result.user.name
           this.messagesList.push(result.message)
+          this.addMessagesList({
+            name: this.toUserInfo.name,
+            headimg: '/static/img/headimg/default.jpg',
+            lastMessage: sendContent,
+            time: new Date(),
+            num: 0,
+            id: this.toUserId
+          })
           this.resetScroller(true)
           this.$vux.loading.hide()
         }).catch(() => {
@@ -199,6 +208,14 @@
               type: 'text'
             })
             this.messagesList.push(message)
+            this.addMessagesList({
+              name: this.toUserInfo.name,
+              headimg: '/static/img/headimg/default.jpg',
+              lastMessage: message,
+              time: new Date(),
+              num: 0,
+              id: this.toUserId
+            })
             this.resetScroller(true)
           })
           .notification((data) => {

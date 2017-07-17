@@ -1,30 +1,29 @@
 <template>
   <div>
-    <div v-for="message in messagesList">
-      <flexbox>
-        <flexbox-item>img</flexbox-item>
-        <flexbox-item>
-          <flexbox orient="vertical">
-            <flexbox-item>name</flexbox-item>
-            <flexbox-item>lastMessage</flexbox-item>
+    <div v-for="message in messagesList" class="messageBox" @click="clickFriend(message.id)">
+      <flexbox :gutter="0">
+        <flexbox-item :span="2.5">
+          <div style="text-align:center"><img :src="message.headimg"  style="height: 36px; width: 36px"></div>
+        </flexbox-item>
+        <flexbox-item  :span="7">
+          <flexbox orient="vertical" :gutter="0">
+            <flexbox-item>{{message.name}}</flexbox-item>
+            <flexbox-item>{{message.lastMessage}}</flexbox-item>
           </flexbox>
         </flexbox-item>
-        <flexbox-item>
-          <flexbox orient="vertical">
-            <flexbox-item>time</flexbox-item>
-            <flexbox-item>messageNum</flexbox-item>
+        <flexbox-item :span="2.5">
+          <flexbox orient="vertical" :gutter="0">
+            <flexbox-item>{{message.time}}</flexbox-item>
+            <flexbox-item>{{message.num}}</flexbox-item>
           </flexbox>
         </flexbox-item>
       </flexbox>
     </div>
-
   </div>
 </template>
 
 <script>
-  import { Group, Cell, Selector } from 'vux'
-  import Flexbox from '../../../node_modules/vux/src/components/flexbox/flexbox'
-  import FlexboxItem from '../../../node_modules/vux/src/components/flexbox/flexbox-item'
+  import { Group, Cell, Selector, Flexbox, FlexboxItem } from 'vux'
 
   export default {
     components: {
@@ -46,36 +45,46 @@
           name: '用户名',
           headimg: '/static/img/headimg/default.jpg',
           lastMessage: '最后发的消息',
-          time: '下午4:35'
+          time: '下午4:35',
+          num: 0,
+          id: 1
         },
         {
           name: '用户名',
           headimg: '/static/img/headimg/default.jpg',
           lastMessage: '最后发的消息',
-          time: '下午4:35'
+          time: '下午4:35',
+          num: 0,
+          id: 1
         },
         {
           name: '用户名',
           headimg: '/static/img/headimg/default.jpg',
           lastMessage: '最后发的消息',
-          time: '下午4:35'
+          time: '下午4:35',
+          num: 0,
+          id: 1
         },
         {
           name: '用户名',
           headimg: '/static/img/headimg/default.jpg',
           lastMessage: '最后发的消息',
-          time: '下午4:35'
+          time: '下午4:35',
+          num: 0,
+          id: 1
         }
       ]
     },
     methods: {
       /**/
-      clickFriend: function (userId) {
+      clickFriend (userId) {
         this.$router.push({name: 'chat', params: {userId: userId}})
-      },
-      getFriendList: function () {
-        return this.$api.user.getFriendList()
       }
     }
   }
 </script>
+<style>
+  .messageBox {
+    border-bottom: solid 1px #338b88; padding: 5px
+  }
+</style>
