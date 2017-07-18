@@ -63,7 +63,9 @@
 
         let ret = '未知'
         if (date >= today) {
-          ret = date.getHours() + ':' + date.getMinutes()
+          let minutes = date.getMinutes()
+          if (minutes < 10) minutes = '0' + minutes
+          ret = date.getHours() + ':' + minutes
         } else if (date >= yesterday && date < today) {
           ret = '昨天'
         } else {
