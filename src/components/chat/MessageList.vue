@@ -13,8 +13,8 @@
         </flexbox-item>
         <flexbox-item :span="2.5">
           <flexbox orient="vertical" :gutter="0">
-            <flexbox-item>{{message.time}}</flexbox-item>
-            <flexbox-item>{{message.num}}</flexbox-item>
+            <flexbox-item>{{message.time | messageTimeFormat}}</flexbox-item>
+            <flexbox-item>{{message.num | messageNumFormat}}</flexbox-item>
           </flexbox>
         </flexbox-item>
       </flexbox>
@@ -50,6 +50,32 @@
       ...mapState({
         messagesList: (state) => state.chat.messagesList
       })
+    },
+    filters: {
+      /* 格式化消息时间 */
+      messageTimeFormat (date) {
+        if (!date) date = new Date()
+        let today = new Date()
+        today.setHours(0, 0, 0, 0)
+        let yesterday = new Date()
+        yesterday.setDate(yesterday.getDate() - 1)
+        yesterday.setHours(0, 0, 0, 0)
+
+        let ret = '未知'
+        if (date >= today) {
+          ret = date.getHours() + ':' + date.getMinutes()
+        } else if (date >= yesterday && date < today) {
+          ret = '昨天'
+        } else {
+          ret = date.getMonth() + '-' + date.getDate()
+        }
+        return ret
+      },
+      /* 格式化消息条数 */
+      messageNumFormat (num) {
+        if (num === 0) return ''
+        return num
+      }
     }
   }
 </script>

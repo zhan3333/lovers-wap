@@ -83,7 +83,6 @@
     created () {
       this.initToUserId()
       this.initHistoryMessage()
-      this.setChatMessageList([])
     },
     mounted () {
       this.inputMessageHeight = this.getInputMessageHeight()

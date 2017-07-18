@@ -57,7 +57,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'changePageTitle', 'loginOut', 'updateAppHeight', 'updateHeaderHeight', 'addChatMessage', 'addMessagesList'
+      'changePageTitle', 'loginOut', 'updateAppHeight', 'updateHeaderHeight', 'addChatMessage', 'addMessagesList', 'setChatMessageList'
     ]),
     /* 初始化router-view的高度 */
     initRouterViewHeight: function () {
@@ -67,6 +67,7 @@ export default {
       this.updateAppHeight(appHeight)
       this.updateHeaderHeight(headerHeight)
     },
+    /* path 变更时操作 */
     pathChangeDo: function (route) {
       console.log(route)
       let noBackList = ['login', 'index', 'home', 'my', 'messageList']
@@ -83,7 +84,12 @@ export default {
       } else {
         this.headerShowBack = true
       }
+      // 修改标题
       this.changePageTitle(route.name)
+      // 清理聊天信息
+      if (route.name === 'chat') {
+        this.setChatMessageList([])
+      }
     },
     /* 右上角菜单点击 */
     showMenu: function () {
@@ -102,6 +108,7 @@ export default {
         }
       }
     },
+    /* 加载socket需要的js文件 */
     loadSocketJs () {
       let js = this.$variables.config.chatSocketJs
       let html = '<script src=" ' + js + '"' + '>' + '<' + '/script>'
