@@ -53,7 +53,7 @@ export default {
     this.pathChangeDo(this.$route)
     this.initRouterViewHeight()
     this.loadSocketJs()
-    setTimeout(this.initSocketListen, 500)
+//    setTimeout(this.initSocketListen, 500)
   },
   methods: {
     ...mapActions([
@@ -111,8 +111,10 @@ export default {
     /* 加载socket需要的js文件 */
     loadSocketJs () {
       let js = this.$variables.config.chatSocketJs
-      let html = '<script src=" ' + js + '"' + '>' + '<' + '/script>'
-      this.$('#socket-js').html(html)
+      this.$.getScript(js)
+        .then(() => {
+          this.initSocketListen()
+        })
     },
     /* 点击tabbar触发 */
     clickTabbar (index) {
