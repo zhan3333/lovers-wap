@@ -11,7 +11,7 @@
       :pulldown-config="pullDownConfig"
     >
       <div>
-        <flexbox orient="vertical" v-for="message in messagesList" :gutter="0">
+        <flexbox orient="vertical" v-for="message in chatMessageList" :gutter="0">
           <flexbox-item v-if="isMeMessage(message)">
             <flexbox :gutter="0">
               <flexbox-item :span="2"><div></div></flexbox-item>
@@ -58,9 +58,6 @@
     },
     data () {
       return {
-        /* 消息列表 */
-        messagesList: [
-        ],
         /* 用户输入消息内容 */
         content: '',
         toUserId: 0,
@@ -86,14 +83,14 @@
     created () {
       this.initToUserId()
       this.initHistoryMessage()
-      this.initSocketListen()
+      this.setChatMessageList([])
     },
     mounted () {
       this.inputMessageHeight = this.getInputMessageHeight()
     },
     methods: {
       ...mapActions([
-        'updateChatToUserId', 'changePageTitle', 'addMessagesList'
+        'updateChatToUserId', 'changePageTitle', 'addMessagesList', 'setChatMessageList', 'addChatMessage'
       ]),
       /* 发送消息 */
       sendMessage: function () {
@@ -109,18 +106,23 @@
           this.content = ''   // 清除输入框
           let message = result.message
           message.name = result.user.name
-          this.messagesList.push(result.message)
+          // 设置聊天消息
+          this.addChatMessage(result.message)
+          // 设置消息
           this.addMessagesList({
             name: this.toUserInfo.name,
             headimg: '/static/img/headimg/default.jpg',
             lastMessage: sendContent,
             time: new Date(),
             num: 0,
-            id: this.toUserId
+            toId: this.toUserId,
+            type: 1,
+            id: this.loginUserId
           })
           this.resetScroller(true)
           this.$vux.loading.hide()
-        }).catch(() => {
+        }).catch((err) => {
+          console.error(err)
           this.$vux.loading.hide()
           this.$vux.toast.show({
             text: '发送失败',
@@ -163,7 +165,7 @@
         }).then((result) => {
           if (!this._.isEmpty(result.messages)) {
             this.messagePage.page = this.messagePage.page + 1
-            this.messagesList = result.messages.reverse()
+            this.setChatMessageList(result.messages.reverse())  // 恢复历史消息
             this.resetScroller(true)
           }
         })
@@ -182,7 +184,7 @@
           if (!this._.isEmpty(result.messages)) {
             this.messagePage.page = this.messagePage.page + 1
             let messagesList = result.messages.reverse()
-            this.messagesList = messagesList.concat(this.messagesList)
+            this.setChatMessageList(messagesList.concat(this.messagesList))
             this.resetScroller()
           }
           this.$refs.scrollerEvent.donePulldown()
@@ -192,36 +194,6 @@
       isMeMessage (message) {
         return message.user_id + '' === this.loginUserId
       },
-      /* 监听所在频道 */
-      initSocketListen () {
-        let channel = 'chat.' + this.loginUserId
-        console.log('listen to ' + channel)
-        let echo = this.$util.initEcho()
-        echo.private(channel)
-          .listen('SendMessage', (e) => {
-            console.log(e)
-            let message = e.message
-            let user = e.user
-            message.name = user.name
-            this.$vux.toast.show({
-              text: message.name + ': ' + message.content,
-              type: 'text'
-            })
-            this.messagesList.push(message)
-            this.addMessagesList({
-              name: this.toUserInfo.name,
-              headimg: '/static/img/headimg/default.jpg',
-              lastMessage: message,
-              time: new Date(),
-              num: 0,
-              id: this.toUserId
-            })
-            this.resetScroller(true)
-          })
-          .notification((data) => {
-            console.log(data)
-          })
-      },
       /* 聊天列表滚动事件 */
       onScroll (data) {
 //        console.log(data)
@@ -230,13 +202,15 @@
       resetScroller (toBottom = false) {
         this.$nextTick(function () {
           let top = 0
-          if (toBottom) {
-            let scrollHeight = this.$(this.$refs.scrollerEvent.$el).children()[0].scrollHeight
-            /* scroller下滑到底部需要的高度  */
-            top = scrollHeight - (this.appHeight - this.headerHeight - this.inputMessageHeight)
-            if (top < 0) top = 0
+          if (this.$refs.scrollerEvent) {
+            if (toBottom) {
+              let scrollHeight = this.$(this.$refs.scrollerEvent.$el).children()[0].scrollHeight
+              /* scroller下滑到底部需要的高度  */
+              top = scrollHeight - (this.appHeight - this.headerHeight - this.inputMessageHeight)
+              if (top < 0) top = 0
+            }
+            this.$refs.scrollerEvent.reset({top})
           }
-          this.$refs.scrollerEvent.reset({top})
         })
       },
       /* 输入框高度 */
@@ -249,7 +223,8 @@
     computed: {
       ...mapState({
         appHeight: state => state.appHeight,
-        headerHeight: state => state.headerHeight
+        headerHeight: state => state.headerHeight,
+        chatMessageList: state => state.chat.chatMessageList
       }),
       /* 登陆用户id */
       loginUserId: function () {
@@ -261,6 +236,13 @@
       }
     },
     watch: {
+      /* 监听聊天消息变化事件 */
+      chatMessageList: {
+        handler: function (val, oldVal) {
+          this.resetScroller(true)
+        },
+        deep: true
+      }
     }
   }
 </script>

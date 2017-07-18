@@ -5,3 +5,5 @@ export const UPDATE_APP_HEIGHT = 'updateAppHeight'          // 储存整个页�
 export const UPDATE_HEADER_HEIGHT = 'updateHeaderHeight'      // 储存头高度
 export const UPDATE_CHAT_TO_USER_ID = 'updateChatToUserId'   // 设置聊天对象id
 export const ADD_MESSAGES_LIST = 'addMessagesList'          // 添加一条消息到历史消息列表
+export const ADD_CHAT_MESSAGE = 'addChatMessage'            // 添加一条聊天消息
+export const SET_CHAT_MESSAGE_LIST = 'setChatMessageList'   // 设置聊天消息

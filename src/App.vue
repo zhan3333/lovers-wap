@@ -47,14 +47,17 @@ export default {
       showTabbar: ''
     }
   },
+  created () {
+  },
   mounted () {
     this.pathChangeDo(this.$route)
     this.initRouterViewHeight()
     this.loadSocketJs()
+    setTimeout(this.initSocketListen, 500)
   },
   methods: {
     ...mapActions([
-      'changePageTitle', 'loginOut', 'updateAppHeight', 'updateHeaderHeight'
+      'changePageTitle', 'loginOut', 'updateAppHeight', 'updateHeaderHeight', 'addChatMessage', 'addMessagesList'
     ]),
     /* 初始化router-view的高度 */
     initRouterViewHeight: function () {
@@ -114,6 +117,39 @@ export default {
       } else if (index === 2) {
         this.$router.replace('my')
       }
+    },
+    /* 监听所在频道 */
+    initSocketListen () {
+      let channel = 'chat.' + this.$store.state.user.loginInfo.uid
+      console.log('listen to ' + channel)
+      let echo = this.$util.initEcho()
+      echo.private(channel)
+        .listen('SendMessage', (e) => {
+          console.log(e)
+          let message = e.message
+          let user = e.user
+          message.name = user.name
+          this.$vux.toast.show({
+            text: message.name + ': ' + message.content,
+            type: 'text'
+          })
+          // 设置聊天消息
+          this.addChatMessage(message)
+          // 设置消息
+          this.addMessagesList({
+            name: user.name,
+            headimg: '/static/img/headimg/default.jpg',
+            lastMessage: message.content,
+            time: new Date(),
+            num: 0,
+            toId: user.id,
+            type: 1,
+            id: this.$store.state.user.loginInfo.uid
+          })
+        })
+        .notification((data) => {
+          console.log(data)
+        })
     }
   },
   computed: {
