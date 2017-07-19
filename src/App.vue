@@ -53,7 +53,6 @@ export default {
     this.pathChangeDo(this.$route)
     this.initRouterViewHeight()
     this.loadSocketJs()
-//    setTimeout(this.initSocketListen, 500)
   },
   methods: {
     ...mapActions([

@@ -6,7 +6,8 @@ const state = {
   loginInfo: {
     uid: Cookies.get('uid') || '',
     token: Cookies.get('token') || ''
-  }
+  },
+  selfInfo: {}
 }
 
 const getters = {
@@ -21,6 +22,18 @@ const actions = {
         .then((result) => {
           commit(types.UPDATE_LOGIN_INFO, result)
           resolve(loginData)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
+  updateSelfInfo ({commit, state}) {
+    return new Promise((resolve, reject) => {
+      user.getUserInfo(state.loginInfo.uid)
+        .then((result) => {
+          commit(types.UPDATE_SELF_INFO, result.user)
+          resolve(result)
         })
         .catch((error) => {
           reject(error)
@@ -46,6 +59,9 @@ const mutations = {
     // 删除Cookies
     Cookies.remove('uid')
     Cookies.remove('token')
+  },
+  [types.UPDATE_SELF_INFO] (state, user) {
+    state.selfInfo = user
   }
 }
 

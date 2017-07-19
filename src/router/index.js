@@ -6,6 +6,7 @@ import Login from '@/components/Login'
 import Register from '@/components/Register'
 import My from '@/components/my/My'
 import MessageList from '@/components/chat/MessageList'
+import EditInfo from '@/components/my/EditInfo'
 
 Vue.use(Router)
 
@@ -39,7 +40,14 @@ export default new Router({
     {
       name: 'my',
       path: '/my',
-      component: My
+      component: My,
+      children: [
+        {
+          path: 'editInfo',
+          component: EditInfo,
+          name: 'editInfo'
+        }
+      ]
     },
     {
       name: 'messageList',
