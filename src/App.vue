@@ -53,10 +53,14 @@ export default {
     this.pathChangeDo(this.$route)
     this.initRouterViewHeight()
     this.loadSocketJs()
+    if (this.$store.state.user.loginInfo.uid && this._.isEmpty(this.$store.state.user.selfInfo)) {
+      /* 获取登陆用户信息 */
+      this.updateSelfInfo()
+    }
   },
   methods: {
     ...mapActions([
-      'changePageTitle', 'loginOut', 'updateAppHeight', 'updateHeaderHeight', 'addChatMessage', 'addMessagesList', 'setChatMessageList'
+      'changePageTitle', 'loginOut', 'updateAppHeight', 'updateHeaderHeight', 'addChatMessage', 'addMessagesList', 'setChatMessageList', 'updateSelfInfo'
     ]),
     /* 初始化router-view的高度 */
     initRouterViewHeight: function () {
@@ -164,7 +168,8 @@ export default {
     ...mapState({
       title: state => state.title,
       headerHeight: state => state.headerHeight,
-      appHeight: state => state.appHeight
+      appHeight: state => state.appHeight,
+      loginInfo: state => state.user.loginInfo
     }),
     path: function () {
       return this.$route.path
@@ -182,6 +187,13 @@ export default {
   watch: {
     route (route) {
       this.pathChangeDo(route)
+    },
+    loginInfo: {
+      // todo
+      handler: function (value, oldVlaue) {
+        console.log(value, oldVlaue)
+      },
+      deep: true
     }
   }
 }

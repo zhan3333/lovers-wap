@@ -90,14 +90,12 @@
       }
     },
     mounted () {
-      /* 获取登陆用户信息 */
-      this.updateSelfInfo()
       /* 修改当前页面标题 */
       this.changePageTitle(this.pageTitle)
     },
     methods: {
       ...mapActions([
-        'updateSelfInfo', 'changePageTitle'
+        'changePageTitle'
       ]),
       toEditInfo () {
         this.$router.push('editInfo')
