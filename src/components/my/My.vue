@@ -100,7 +100,7 @@
         'updateSelfInfo', 'changePageTitle'
       ]),
       toEditInfo () {
-        console.log('toEditInfo')
+        this.$router.push('editInfo')
       }
     },
     computed: {

@@ -40,14 +40,12 @@ export default new Router({
     {
       name: 'my',
       path: '/my',
-      component: My,
-      children: [
-        {
-          path: 'editInfo',
-          component: EditInfo,
-          name: 'editInfo'
-        }
-      ]
+      component: My
+    },
+    {
+      name: 'editInfo',
+      path: '/editInfo',
+      component: EditInfo
     },
     {
       name: 'messageList',
