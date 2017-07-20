@@ -8,3 +8,4 @@ export const ADD_MESSAGES_LIST = 'addMessagesList'          // 添加一条消�
 export const ADD_CHAT_MESSAGE = 'addChatMessage'            // 添加一条聊天消息
 export const SET_CHAT_MESSAGE_LIST = 'setChatMessageList'   // 设置聊天消息
 export const UPDATE_SELF_INFO = 'updateSelfInfo'            // 更新自己的信息
+export const UPDATE_SELF_HEADIMG = 'updateSelfHeadimg'      // 修改登陆用户的头像操作

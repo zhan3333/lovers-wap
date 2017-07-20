@@ -12,7 +12,6 @@ import variables from './config/variables'
 import $ from 'jquery'
 import { ToastPlugin, LoadingPlugin } from 'vux'
 import * as _ from 'lodash'
-import { dbStore } from './js/db/localforage'
 
 Vue.use(ToastPlugin)
 Vue.use(LoadingPlugin)
@@ -26,7 +25,6 @@ Vue.prototype.$util = util
 Vue.prototype.$variables = variables
 Vue.prototype.$ = $
 Vue.prototype._ = _
-Vue.prototype.dbStore = dbStore
 
 /* eslint-disable no-new */
 new Vue({

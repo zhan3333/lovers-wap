@@ -12,7 +12,8 @@ const state = {
 
 const getters = {
   getLoginInfo: state => state.loginInfo,
-  hasToken: state => !!state.loginInfo.uid
+  hasToken: state => !!state.loginInfo.uid,
+  isLogin: state => !!state.loginInfo.uid
 }
 
 const actions = {
@@ -28,6 +29,7 @@ const actions = {
         })
     })
   },
+  /* 更新登陆用户的信息 */
   updateSelfInfo ({commit, state}) {
     return new Promise((resolve, reject) => {
       user.getUserInfo(state.loginInfo.uid)
@@ -39,6 +41,10 @@ const actions = {
           reject(error)
         })
     })
+  },
+  /* 修改用户的头像 */
+  updateSelfHeadimg ({commit, state}, headimgFullUrl) {
+    commit(types.UPDATE_SELF_HEADIMG, headimgFullUrl)
   },
   /* 退出登陆 */
   loginOut ({commit}) {
@@ -55,13 +61,17 @@ const mutations = {
     Cookies.set('token', token, {expires: 30})
   },
   [types.LOGIN_OUT] (state) {
-    state.loginInfo = {}
+    state.loginInfo.uid = ''
+    state.loginInfo.token = ''
     // 删除Cookies
     Cookies.remove('uid')
     Cookies.remove('token')
   },
   [types.UPDATE_SELF_INFO] (state, user) {
-    state.selfInfo = user
+    state.selfInfo = {...user}
+  },
+  [types.UPDATE_SELF_HEADIMG] (state, headimgFullUrl) {
+    state.selfInfo.headimg_full_url = headimgFullUrl
   }
 }
 

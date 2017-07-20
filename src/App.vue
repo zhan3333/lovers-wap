@@ -27,7 +27,7 @@
 
 <script>
 import { XHeader, Actionsheet, Tabbar, TabbarItem } from 'vux'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 export default {
   name: 'app',
   components: {
@@ -53,8 +53,7 @@ export default {
     this.pathChangeDo(this.$route)
     this.initRouterViewHeight()
     this.loadSocketJs()
-    if (this.$store.state.user.loginInfo.uid && this._.isEmpty(this.$store.state.user.selfInfo)) {
-      /* 获取登陆用户信息 */
+    if (this.isLogin && this._.isEmpty(this.$store.state.user.selfInfo)) {
       this.updateSelfInfo()
     }
   },
@@ -116,7 +115,7 @@ export default {
       let js = this.$variables.config.chatSocketJs
       this.$.getScript(js)
         .then(() => {
-          this.initSocketListen()
+          if (this.isLogin) this.initSocketListen()
         })
     },
     /* 点击tabbar触发 */
@@ -132,6 +131,7 @@ export default {
     },
     /* 监听所在频道 */
     initSocketListen () {
+      if (!this.$store.state.user.loginInfo.uid) return false
       let channel = 'chat.' + this.$store.state.user.loginInfo.uid
       console.log('listen to ' + channel)
       let echo = this.$util.initEcho()
@@ -169,8 +169,11 @@ export default {
       title: state => state.title,
       headerHeight: state => state.headerHeight,
       appHeight: state => state.appHeight,
-      loginInfo: state => state.user.loginInfo
+      uid: state => state.user.loginInfo.uid
     }),
+    ...mapGetters([
+      'isLogin'
+    ]),
     path: function () {
       return this.$route.path
     },
@@ -188,12 +191,11 @@ export default {
     route (route) {
       this.pathChangeDo(route)
     },
-    loginInfo: {
-      // todo
-      handler: function (value, oldVlaue) {
-        console.log(value, oldVlaue)
-      },
-      deep: true
+    uid (val, oldVal) {
+      if (val) {
+        this.updateSelfInfo()
+        this.initSocketListen()
+      }
     }
   }
 }
