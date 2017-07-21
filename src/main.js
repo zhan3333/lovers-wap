@@ -5,12 +5,11 @@ import FastClick from 'fastclick'
 import App from './App'
 import router from './router'
 import store from './store'
-import * as Cookies from 'js-cookie'
 import api from './api'
 import util from './js/util'
 import variables from './config/variables'
 import $ from 'jquery'
-import { ToastPlugin, LoadingPlugin } from 'vux'
+import { ToastPlugin, LoadingPlugin, cookie, dateFormat } from 'vux'
 import * as _ from 'lodash'
 
 Vue.use(ToastPlugin)
@@ -19,12 +18,13 @@ Vue.use(LoadingPlugin)
 FastClick.attach(document.body)
 
 Vue.config.productionTip = false
-Vue.prototype.Cookies = Cookies
+Vue.prototype.cookie = cookie
 Vue.prototype.$api = api
 Vue.prototype.$util = util
 Vue.prototype.$variables = variables
 Vue.prototype.$ = $
 Vue.prototype._ = _
+Vue.prototype.dateFormat = dateFormat
 
 /* eslint-disable no-new */
 new Vue({

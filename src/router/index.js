@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from './../store'
+import { mapActions } from 'vuex'
 import Chat from '@/components/Chat'
 import Home from '@/components/Home'
 import Login from '@/components/Login'
@@ -9,8 +11,11 @@ import MessageList from '@/components/chat/MessageList'
 import EditInfo from '@/components/my/EditInfo'
 
 Vue.use(Router)
+const loading = mapActions(['updateLoadingStatus'])
+console.log(loading)
+console.log(store)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       name: 'index',
@@ -54,3 +59,15 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach(function (to, from, next) {
+  console.log('beforeEach')
+  store.dispatch('updateLoadingStatus', {isLoading: true})
+  next()
+})
+
+router.afterEach(function (to) {
+  store.dispatch('updateLoadingStatus', {isLoading: false})
+})
+
+export default router

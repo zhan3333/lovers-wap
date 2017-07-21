@@ -5,6 +5,7 @@ import * as getters from './getters'
 import mutations from './mutations'
 import user from './modules/user'
 import chat from './modules/chat'
+import loading from './modules/loading'
 
 Vue.use(Vuex)
 
@@ -21,7 +22,8 @@ export default new Vuex.Store({
   mutations,
   modules: {
     user,
-    chat
+    chat,
+    loading
   },
   strict: debug
 })

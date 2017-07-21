@@ -10,6 +10,7 @@
     >{{title}}
     </x-header>
     <router-view v-bind:style="{paddingTop: routerViewPaddingTop, height: routerViewHeight}"></router-view>
+    <!-- 底部tabbar栏 -->
     <tabbar v-bind:style="{display: showTabbar}">
       <tabbar-item @on-item-click="clickTabbar">
         <span slot="label" >聊天</span>
@@ -21,12 +22,15 @@
         <span slot="label">我的</span>
       </tabbar-item>
     </tabbar>
+    <!-- 右上角菜单 -->
     <actionsheet v-model="isShowMenu" :menus="menus" @on-click-menu="clickMenu" show-cancel></actionsheet>
+    <!-- 页面切换加载图 -->
+    <loading v-model="isLoading"></loading>
   </div>
 </template>
 
 <script>
-import { XHeader, Actionsheet, Tabbar, TabbarItem } from 'vux'
+import { XHeader, Actionsheet, Tabbar, TabbarItem, Loading } from 'vux'
 import { mapState, mapActions, mapGetters } from 'vuex'
 export default {
   name: 'app',
@@ -34,7 +38,8 @@ export default {
     XHeader,
     Actionsheet,
     Tabbar,
-    TabbarItem
+    TabbarItem,
+    Loading
   },
   data () {
     return {
@@ -172,7 +177,7 @@ export default {
       uid: state => state.user.loginInfo.uid
     }),
     ...mapGetters([
-      'isLogin'
+      'isLogin', 'isLoading'
     ]),
     path: function () {
       return this.$route.path
