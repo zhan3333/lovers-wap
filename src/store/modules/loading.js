@@ -13,7 +13,6 @@ const actions = {
 const mutations = {
   [types.UPDATE_LOADING_STATUS] (state, isLoading) {
     state.isLoading = isLoading
-    console.log(isLoading, state)
   }
 }
 

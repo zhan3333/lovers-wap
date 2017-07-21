@@ -71,7 +71,7 @@ const mutations = {
     state.selfInfo = {...user}
   },
   [types.UPDATE_SELF_HEADIMG] (state, headimgFullUrl) {
-    state.selfInfo.headimg_full_url = headimgFullUrl
+    state.selfInfo.headimg_url = headimgFullUrl
   }
 }
 

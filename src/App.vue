@@ -53,6 +53,7 @@ export default {
     }
   },
   created () {
+    this.initMessagesList()
   },
   mounted () {
     this.pathChangeDo(this.$route)
@@ -64,7 +65,15 @@ export default {
   },
   methods: {
     ...mapActions([
-      'changePageTitle', 'loginOut', 'updateAppHeight', 'updateHeaderHeight', 'addChatMessage', 'addMessagesList', 'setChatMessageList', 'updateSelfInfo'
+      'changePageTitle',
+      'loginOut',
+      'updateAppHeight',
+      'updateHeaderHeight',
+      'addChatMessage',
+      'addMessagesList',
+      'setChatMessageList',
+      'updateSelfInfo',
+      'initMessagesList'
     ]),
     /* 初始化router-view的高度 */
     initRouterViewHeight: function () {
@@ -125,7 +134,6 @@ export default {
     },
     /* 点击tabbar触发 */
     clickTabbar (index) {
-      console.log(index)
       if (index === 0) {
         this.$router.replace('messageList')
       } else if (index === 1) {
@@ -155,7 +163,7 @@ export default {
           // 设置消息
           this.addMessagesList({
             name: user.name,
-            headimg: '/static/img/headimg/default.jpg',
+            headimg: user.headimg_url,
             lastMessage: message.content,
             time: new Date(),
             num: 0,

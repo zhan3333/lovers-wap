@@ -10,3 +10,4 @@ export const SET_CHAT_MESSAGE_LIST = 'setChatMessageList'   // 设置聊天消�
 export const UPDATE_SELF_INFO = 'updateSelfInfo'            // 更新自己的信息
 export const UPDATE_SELF_HEADIMG = 'updateSelfHeadimg'      // 修改登陆用户的头像操作
 export const UPDATE_LOADING_STATUS = 'updateLoadingStatus'  // 修改加载页面状态
+export const INIT_MESSAGES_LIST = 'initMessagesList'        // 初始化消息列表

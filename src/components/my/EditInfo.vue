@@ -5,7 +5,7 @@
         <form id="uploadHeadimgForm" enctype="multipart/form-data" style="display: none;">
           <input v-on:change="fileOnChange" type="file" name="headimg" id="headimg"/>
         </form>
-        <img :src="headimg_full_url" solt="value" style="height: 40px; width: 40px;border-radius: 50%; margin: 10px auto 5px auto;vertical-align: middle;">
+        <img :src="headimg_url" solt="value" style="height: 40px; width: 40px;border-radius: 50%; margin: 10px auto 5px auto;vertical-align: middle;">
       </cell>
       <cell title="用户名/昵称" :border-intent="false"></cell>
     </group>
@@ -32,7 +32,6 @@
       ]),
       /* 点击头像栏触发input file操作 */
       clickChangeHeadimg () {
-        console.log(111111111112)
         this.$('#headimg').click()
       },
       /* 上传图片操作 */
@@ -72,7 +71,7 @@
     },
     computed: {
       ...mapState({
-        headimg_full_url: (state) => state.user.selfInfo.headimg_full_url || '/static/img/headimg/default.jpg'
+        headimg_url: (state) => state.user.selfInfo.headimg_url || '/static/img/headimg/default.jpg'
       })
     }
   }

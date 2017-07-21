@@ -8,7 +8,7 @@
           <flexbox-item>
             <flexbox orient="vertical" :gutter="0" @click.native="toEditInfo">
               <flexbox-item style="text-align: center">
-                <img :src="headimg_full_url" style="height: 70px; width: 70px;border-radius: 50%; margin: 10px auto 5px auto;vertical-align: middle;">
+                <img :src="headimg_url" style="height: 70px; width: 70px;border-radius: 50%; margin: 10px auto 5px auto;vertical-align: middle;">
               </flexbox-item>
               <flexbox-item style="text-align: center">
                 <div>
@@ -103,7 +103,7 @@
     computed: {
       ...mapState({
         pageTitle: (state) => state.user.selfInfo.name,
-        headimg_full_url: (state) => state.user.selfInfo.headimg_full_url || '/static/img/headimg/default.jpg'
+        headimg_url: (state) => state.user.selfInfo.headimg_url || '/static/img/headimg/default.jpg'
       })
     }
   }
