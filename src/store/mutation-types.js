@@ -11,3 +11,5 @@ export const UPDATE_SELF_INFO = 'updateSelfInfo'            // 更新自己的�
 export const UPDATE_SELF_HEADIMG = 'updateSelfHeadimg'      // 修改登陆用户的头像操作
 export const UPDATE_LOADING_STATUS = 'updateLoadingStatus'  // 修改加载页面状态
 export const INIT_MESSAGES_LIST = 'initMessagesList'        // 初始化消息列表
+export const CHANGE_TABBAR_STATUS = 'changeTabbarStatus'    // 修改是否显示底部导航状态
+export const CHANGE_HEADER_SHOW_BACK = 'changeHeaderShowBack' // 修改头部栏是否显示返回按钮

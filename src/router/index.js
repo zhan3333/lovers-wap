@@ -57,7 +57,31 @@ const router = new Router({
 })
 
 router.beforeEach(function (to, from, next) {
+  console.log(to, from)
   store.dispatch('updateLoadingStatus', {isLoading: true})
+
+  let noBackList = ['login', 'index', 'home', 'my', 'messageList']
+  let showTabbarList = ['my', 'home', 'messageList']
+  let noShowBack = noBackList.indexOf(to.name)
+  let showTabbar = showTabbarList.indexOf(to.name)
+  if (showTabbar !== -1) {
+    store.dispatch('changeTabbarStatus', true)
+  } else {
+    store.dispatch('changeTabbarStatus', false)
+  }
+  if (noShowBack !== -1) {
+    store.dispatch('changeHeaderShowBack', false)
+  } else {
+    store.dispatch('changeHeaderShowBack', true)
+  }
+  // 修改标题
+  // this.changePageTitle(to.name)
+  store.dispatch('changePageTitle', to.name)
+  // 清理聊天信息
+  if (to.name === 'chat') {
+    // this.setChatMessageList([])
+    store.dispatch('setChatMessageList', [])
+  }
   next()
 })
 

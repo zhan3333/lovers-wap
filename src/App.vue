@@ -43,7 +43,6 @@ export default {
   },
   data () {
     return {
-      headerShowBack: true,
       headerShowMore: true,
       isShowMenu: false,
       menus: {
@@ -56,7 +55,6 @@ export default {
     this.initMessagesList()
   },
   mounted () {
-    this.pathChangeDo(this.$route)
     this.initRouterViewHeight()
     this.loadSocketJs()
     if (this.isLogin && this._.isEmpty(this.$store.state.user.selfInfo)) {
@@ -65,7 +63,6 @@ export default {
   },
   methods: {
     ...mapActions([
-      'changePageTitle',
       'loginOut',
       'updateAppHeight',
       'updateHeaderHeight',
@@ -82,30 +79,6 @@ export default {
       let appHeight = $(document).height()
       this.updateAppHeight(appHeight)
       this.updateHeaderHeight(headerHeight)
-    },
-    /* path 变更时操作 */
-    pathChangeDo: function (route) {
-      console.log(route)
-      let noBackList = ['login', 'index', 'home', 'my', 'messageList']
-      let showTabbarList = ['my', 'home', 'messageList']
-      let noShowBack = noBackList.indexOf(route.name)
-      let showTabbar = showTabbarList.indexOf(route.name)
-      if (showTabbar !== -1) {
-        this.showTabbar = ''
-      } else {
-        this.showTabbar = 'none'
-      }
-      if (noShowBack !== -1) {
-        this.headerShowBack = false
-      } else {
-        this.headerShowBack = true
-      }
-      // 修改标题
-      this.changePageTitle(route.name)
-      // 清理聊天信息
-      if (route.name === 'chat') {
-        this.setChatMessageList([])
-      }
     },
     /* 右上角菜单点击 */
     showMenu: function () {
@@ -182,14 +155,12 @@ export default {
       title: state => state.title,
       headerHeight: state => state.headerHeight,
       appHeight: state => state.appHeight,
-      uid: state => state.user.loginInfo.uid
+      uid: state => state.user.loginInfo.uid,
+      headerShowBack: state => state.headerShowBack
     }),
     ...mapGetters([
       'isLogin', 'isLoading'
     ]),
-    path: function () {
-      return this.$route.path
-    },
     route: function () {
       return this.$route
     },
@@ -201,9 +172,6 @@ export default {
     }
   },
   watch: {
-    route (route) {
-      this.pathChangeDo(route)
-    },
     uid (val, oldVal) {
       if (val) {
         this.updateSelfInfo()
