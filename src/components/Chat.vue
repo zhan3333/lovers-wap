@@ -17,14 +17,14 @@
               <flexbox-item :span="2"><div></div></flexbox-item>
               <flexbox-item :span="8"><div class="isMeMessage">{{message.content}}</div></flexbox-item>
               <flexbox-item :span="2">
-                <div style="text-align:center"><img src="/static/img/headimg/default.jpg"  style="height: 36px; width: 36px"></div>
+                <div style="text-align:center"><img :src="selfInfo.headimg_url"  style="height: 36px; width: 36px"></div>
               </flexbox-item>
             </flexbox>
           </flexbox-item>
           <flexbox-item v-else>
             <flexbox :gutter="0">
               <flexbox-item :span="2">
-                <div style="text-align:center"><img src="/static/img/headimg/default-2.jpg"  style="height: 36px; width: 36px"></div>
+                <div style="text-align:center"><img :src="toUserInfo.headimg_url"  style="height: 36px; width: 36px"></div>
               </flexbox-item>
               <flexbox-item :span="8"><div class="otherMessage">{{message.content}}</div></flexbox-item>
               <flexbox-item :span="2"><div></div></flexbox-item>
@@ -223,7 +223,8 @@
       ...mapState({
         appHeight: state => state.appHeight,
         headerHeight: state => state.headerHeight,
-        chatMessageList: state => state.chat.chatMessageList
+        chatMessageList: state => state.chat.chatMessageList,
+        selfInfo: state => state.user.selfInfo
       }),
       /* 登陆用户id */
       loginUserId: function () {

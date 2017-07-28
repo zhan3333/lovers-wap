@@ -47,8 +47,7 @@ export default {
       isShowMenu: false,
       menus: {
         exit: '退出'
-      },
-      showTabbar: ''
+      }
     }
   },
   created () {
@@ -156,7 +155,8 @@ export default {
       headerHeight: state => state.headerHeight,
       appHeight: state => state.appHeight,
       uid: state => state.user.loginInfo.uid,
-      headerShowBack: state => state.headerShowBack
+      headerShowBack: state => state.headerShowBack,
+      showTabbar: state => state.showTabbar
     }),
     ...mapGetters([
       'isLogin', 'isLoading'
