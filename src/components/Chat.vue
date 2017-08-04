@@ -1,5 +1,5 @@
 <template>
-  <div id="chatBody">
+  <div id="chat-body">
     <scroller
       @on-scroll="onScroll"
       lock-x
@@ -12,21 +12,21 @@
     >
       <div>
         <flexbox orient="vertical" v-for="message in chatMessageList" :gutter="0">
-          <flexbox-item v-if="isMeMessage(message)">
-            <flexbox :gutter="0">
+          <flexbox-item v-if="isMeMessage(message)" class="message-body">
+            <flexbox :gutter="0" class="isMeMessage">
               <flexbox-item :span="2"><div></div></flexbox-item>
-              <flexbox-item :span="8"><div class="isMeMessage">{{message.content}}</div></flexbox-item>
-              <flexbox-item :span="2">
-                <div style="text-align:center"><img :src="selfInfo.headimg_url"  style="height: 36px; width: 36px"></div>
+              <flexbox-item :span="8" class="content"><div>{{message.content}}</div></flexbox-item>
+              <flexbox-item :span="2" class="headimg">
+                <div><img :src="selfInfo.headimg_url"></div>
               </flexbox-item>
             </flexbox>
           </flexbox-item>
-          <flexbox-item v-else>
-            <flexbox :gutter="0">
-              <flexbox-item :span="2">
-                <div style="text-align:center"><img :src="toUserInfo.headimg_url"  style="height: 36px; width: 36px"></div>
+          <flexbox-item v-else class="message-body">
+            <flexbox :gutter="0" class="otherMessage">
+              <flexbox-item :span="2" class="headimg">
+                <div><img :src="toUserInfo.headimg_url"></div>
               </flexbox-item>
-              <flexbox-item :span="8"><div class="otherMessage">{{message.content}}</div></flexbox-item>
+              <flexbox-item :span="8" class="content"><div class="otherMessage">{{message.content}}</div></flexbox-item>
               <flexbox-item :span="2"><div></div></flexbox-item>
             </flexbox>
           </flexbox-item>
@@ -249,15 +249,33 @@
 
 <style>
   /* 我的消息 */
-  .isMeMessage {
+  .isMeMessage .content div{
     float: right;
     padding: 10px;
   }
-  .otherMessage {
+  .headimg div{
+    text-align: center;
+  }
+  .headimg div img {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+  }
+  .otherMessage .content div {
     float: left;
     padding: 10px;
   }
+  .content div {
+    border: solid 1px #c5c6c7;
+    border-radius: 17%;
+  }
   .boxItem {
     position: relative;
+  }
+  #chat-body {
+    background-color: #f0f2f8;
+  }
+  .message-body {
+    margin-bottom: 10px;
   }
 </style>
