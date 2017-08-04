@@ -1,22 +1,20 @@
 <template>
   <div>
-    <group v-for="user in friendList">
-      <cell is-link @click.native="clickFriend(user.id)">
-        <flexbox :gutter="0">
-          <!--好友头像-->
-          <flexbox-item :span="4">
-            <div style="text-align:center"><img :src="user.headimg_url" class="headimg"></div>
-          </flexbox-item>
-          <flexbox-item :span="8">
-            <!--右侧好友名称和签名-->
-            <flexbox :gutter="0"   orient="vertical">
-              <flexbox-item>{{user.name}}</flexbox-item>
-              <flexbox-item></flexbox-item>
-            </flexbox>
-          </flexbox-item>
-        </flexbox>
-      </cell>
-    </group>
+    <div v-for="user in friendList">
+      <flexbox :gutter="0" @click.native="clickFriend(user.id)" class="friend-box">
+        <!--好友头像-->
+        <flexbox-item :span="2">
+          <div class="headimg-box"><img :src="user.headimg_url"></div>
+        </flexbox-item>
+        <flexbox-item :span="10">
+          <!--右侧好友名称和签名-->
+          <flexbox :gutter="0"   orient="vertical">
+            <flexbox-item class="name">{{user.name}}</flexbox-item>
+            <flexbox-item class="signature">签名</flexbox-item>
+          </flexbox>
+        </flexbox-item>
+      </flexbox>
+    </div>
   </div>
 </template>
 
@@ -59,9 +57,23 @@
   }
 </script>
 <style>
-  .headimg {
-    height: 55px;
-    width: 55px;
+  .headimg-box img{
+    height: 40px;
+    width: 40px;
     border-radius: 50%;
+    margin: 10px auto;
+    vertical-align: middle;
+  }
+  .headimg-box {
+    text-align: center;
+  }
+  .friend-box {
+    border-bottom: solid 1px #dedfe0;
+  }
+  .name {
+    font-weight: normal;
+  }
+  .signature {
+    color: #808080;
   }
 </style>

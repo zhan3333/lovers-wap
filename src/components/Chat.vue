@@ -110,7 +110,7 @@
           // 设置消息
           this.addMessagesList({
             name: this.toUserInfo.name,
-            headimg: '/static/img/headimg/default.jpg',
+            headimg: this.toUserInfo.headimg_url,
             lastMessage: sendContent,
             time: new Date(),
             num: 0,

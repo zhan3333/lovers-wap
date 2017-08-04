@@ -96,6 +96,7 @@
   .message-name {
     color: #000000;
     font-size: 19px;
+    font-weight: normal;
   }
   .message-content {
     color: #808080;
