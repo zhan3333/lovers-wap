@@ -1,8 +1,17 @@
-# lovers-web
+# 是什么?
 
-> A Vue.js project
+这是使用了`Laravel-echo-server`+`Vue`+`Element`开发的一款在线即时聊天应用.
+这里是前端代码.
 
-## Build Setup
+# 相关
+[后端](https://github.com/zhan3333/hong-dou-lovers)
+[前端](https://github.com/zhan3333/lovers-wap)
+[demo](http://hd.grianchan.com)
+
+
+# 如何开发?
+
+## 开发
 
 ``` bash
 # install dependencies
@@ -10,21 +19,13 @@ npm install
 
 # serve with hot reload at localhost:8080
 npm run dev
-
-# build for production with minification
+```
+## 编译
+``` $xslt
 npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
 ```
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+# demo 图
+![图1](http://ozp0fta05.bkt.clouddn.com/1.png)
+![图2](http://ozp0fta05.bkt.clouddn.com/2.png)
+![图3](http://ozp0fta05.bkt.clouddn.com/3.png)

@@ -1,7 +1,7 @@
 <template>
   <div class="loginBody">
     <group gutter="8em" style="background-color: transparent">
-      <x-input title="" v-model="username" type="text" required placeholder="邮箱/用户名"></x-input>
+      <x-input title="" v-model="identifier" type="text" required placeholder="邮箱/用户名"></x-input>
       <x-input title="" v-model="password" type="password" required placeholder="密码"></x-input>
       <x-button @click.native="login" type="primary">login</x-button>
       <flexbox>
@@ -32,7 +32,7 @@
     },
     data () {
       return {
-        username: '',
+        identifier: '',
         password: ''
       }
     },
@@ -43,7 +43,7 @@
       login: function () {
         // 登陆逻辑
         this.updateLoginInfo({
-          username: this.username,
+          identifier: this.identifier,
           password: this.password
         })
           .then((result) => {

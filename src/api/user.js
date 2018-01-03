@@ -2,7 +2,7 @@ import fetch from '../js/http/fetch'
 export default {
   login (loginData) {
     return fetch.post('auth/login', {
-      email: loginData.username,
+      identifier: loginData.identifier,
       password: loginData.password
     })
   },

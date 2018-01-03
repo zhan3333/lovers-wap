@@ -10,4 +10,10 @@ export const updateAppHeight = ({commit}, height) => {
 export const updateHeaderHeight = ({commit}, height) => {
   commit(types.UPDATE_HEADER_HEIGHT, height)
 }
+export const changeTabbarStatus = ({commit}, status) => {
+  commit(types.CHANGE_TABBAR_STATUS, status)
+}
+export const changeHeaderShowBack = ({commit}, status) => {
+  commit(types.CHANGE_HEADER_SHOW_BACK, status)
+}
 
